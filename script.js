@@ -3,8 +3,8 @@ const CATEGORIES = {
     label: "Carro de luxo",
     shortLabel: "Carro",
     averageTicket: 1000000,
-    currentSales: 2,
-    bmfSales: 1,
+    currentSales: 10,
+    bmfSales: 2,
     commission: 5,
   },
   barco: {
