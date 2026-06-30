@@ -11,7 +11,7 @@ const CATEGORIES = {
     label: "Barco",
     shortLabel: "Barco",
     averageTicket: 2000000,
-    currentSales: 1,
+    currentSales: 5,
     bmfSales: 1,
     commission: 3,
   },
