@@ -81,16 +81,19 @@ const elements = {
   averageTicketResult: document.querySelector("#averageTicketResult"),
   currentSalesResult: document.querySelector("#currentSalesResult"),
   bmfSalesResult: document.querySelector("#bmfSalesResult"),
-  specialistIncrementalNetProfit: document.querySelector("#specialistIncrementalNetProfit"),
-  specialistMarginAlert: document.querySelector("#specialistMarginAlert"),
-  specialistHeroText: document.querySelector("#specialistHeroText"),
-  specialistTotalProfitWithBmf: document.querySelector("#specialistTotalProfitWithBmf"),
-  commissionTradeoff: document.querySelector("#commissionTradeoff"),
-  commissionTradeoffText: document.querySelector("#commissionTradeoffText"),
-  efficiencyRatio: document.querySelector("#efficiencyRatio"),
-  efficiencyRatioText: document.querySelector("#efficiencyRatioText"),
-  marginBefore: document.querySelector("#marginBefore"),
-  marginAfter: document.querySelector("#marginAfter"),
+  /* Nova visão do especialista: Antes/Depois + Crescimento + ROI */
+  comparisonCurrentProfit: document.querySelector("#comparisonCurrentProfit"),
+  comparisonCurrentSales: document.querySelector("#comparisonCurrentSales"),
+  comparisonCurrentMargin: document.querySelector("#comparisonCurrentMargin"),
+  comparisonTotalProfit: document.querySelector("#comparisonTotalProfit"),
+  comparisonTotalSales: document.querySelector("#comparisonTotalSales"),
+  comparisonNetMargin: document.querySelector("#comparisonNetMargin"),
+  growthAmount: document.querySelector("#growthAmount"),
+  growthText: document.querySelector("#growthText"),
+  specialistRoi: document.querySelector("#specialistRoi"),
+  specialistRoiText: document.querySelector("#specialistRoiText"),
+  specialistCommission: document.querySelector("#specialistCommission"),
+  specialistCommissionText: document.querySelector("#specialistCommissionText"),
   consultantRevenue: document.querySelector("#consultantRevenue"),
   consultantOpportunities: document.querySelector("#consultantOpportunities"),
   consultantTakeRate: document.querySelector("#consultantTakeRate"),
@@ -316,6 +319,8 @@ function calculateCategory(values) {
   const platformTakeRate = incrementalGmv > 0 ? (platformRevenue / incrementalGmv) * 100 : 0;
   const consultantTakeRate = incrementalGmv > 0 ? (consultantRevenue / incrementalGmv) * 100 : 0;
   const efficiencyRatio = commissionPaid > 0 ? incrementalGmv / commissionPaid : 0;
+  const profitRoi = commissionPaid > 0 ? specialistIncrementalNetProfit / commissionPaid : 0;
+  const growthPercent = specialistCurrentProfit > 0 ? (specialistIncrementalNetProfit / specialistCurrentProfit) * 100 : 0;
   const specialistNetIncrementalMargin = values.specialistMargin - values.totalCommission;
 
   return {
@@ -336,6 +341,8 @@ function calculateCategory(values) {
     platformTakeRate,
     consultantTakeRate,
     efficiencyRatio,
+    profitRoi,
+    growthPercent,
     specialistNetIncrementalMargin,
   };
 }
@@ -377,6 +384,8 @@ function calculateConsolidated(resultsByCategory) {
     platformSplit: commissionPaid > 0 ? (platformRevenue / commissionPaid) * 100 : 50,
     consultantSplit: commissionPaid > 0 ? (consultantRevenue / commissionPaid) * 100 : 50,
     efficiencyRatio: commissionPaid > 0 ? incrementalGmv / commissionPaid : 0,
+    profitRoi: commissionPaid > 0 ? sum("specialistIncrementalNetProfit") / commissionPaid : 0,
+    growthPercent: sum("specialistCurrentProfit") > 0 ? (sum("specialistIncrementalNetProfit") / sum("specialistCurrentProfit")) * 100 : 0,
   };
 }
 
@@ -396,15 +405,11 @@ function renderEmptyState() {
     elements.averageTicketResult,
     elements.currentSalesResult,
     elements.bmfSalesResult,
-    elements.specialistIncrementalNetProfit,
-    elements.specialistHeroText,
-    elements.specialistTotalProfitWithBmf,
-    elements.commissionTradeoff,
-    elements.commissionTradeoffText,
-    elements.efficiencyRatio,
-    elements.efficiencyRatioText,
-    elements.marginBefore,
-    elements.marginAfter,
+    elements.comparisonCurrentProfit,
+    elements.comparisonTotalProfit,
+    elements.growthAmount,
+    elements.specialistRoi,
+    elements.specialistCommission,
     elements.consultantRevenue,
     elements.consultantOpportunities,
     elements.consultantTakeRate,
@@ -426,7 +431,13 @@ function renderEmptyState() {
     element.textContent = "Não calculado";
   });
 
-  elements.specialistMarginAlert.hidden = true;
+  elements.specialistRoiText.textContent = "A cada R$ 1 em comissão, R$ 0 em lucro novo.";
+  elements.specialistCommissionText.textContent = "Apenas sobre as vendas que a BMF trouxer.";
+  elements.growthText.textContent = "de lucro adicional por mês";
+  elements.comparisonCurrentSales.textContent = "0 vendas";
+  elements.comparisonCurrentMargin.textContent = "margem 0%";
+  elements.comparisonTotalSales.textContent = "0 vendas";
+  elements.comparisonNetMargin.textContent = "margem líquida 0%";
 }
 
 function toggleViewMode(isConsolidated) {
@@ -492,16 +503,25 @@ function renderResults(result, label) {
   elements.averageTicketResult.textContent = formatCurrency(result.averageTicket);
   elements.currentSalesResult.textContent = integerFormatter.format(result.currentSales);
   elements.bmfSalesResult.textContent = integerFormatter.format(result.bmfSales);
-  elements.specialistIncrementalNetProfit.textContent = formatSignedCurrency(result.specialistIncrementalNetProfit);
-  elements.specialistMarginAlert.hidden = result.specialistNetIncrementalMargin >= 0;
-  elements.specialistHeroText.textContent = `Lucro adicional após aplicar ${formatPercent(result.specialistMargin)} de margem atual e descontar ${formatPercent(result.totalCommissionRate)} de comissão BMF.`;
-  elements.specialistTotalProfitWithBmf.textContent = formatCurrency(result.specialistTotalProfitWithBmf);
-  elements.commissionTradeoff.textContent = formatCurrency(result.commissionPaid);
-  elements.commissionTradeoffText.textContent = `${formatPercent(result.totalCommissionRate)} sobre ${formatCurrency(result.incrementalGmv)} — investimento para ${integerFormatter.format(result.bmfSales)} nova(s) venda(s).`;
-  elements.efficiencyRatio.textContent = formatCurrency(result.incrementalGmv);
-  elements.efficiencyRatioText.textContent = "GMV incremental via BMF antes de margem e comissão.";
-  elements.marginBefore.textContent = formatPercent(result.specialistMargin);
-  elements.marginAfter.textContent = formatPercent(result.specialistNetIncrementalMargin);
+
+  /* Nova visão do especialista: Antes/Depois */
+  elements.comparisonCurrentProfit.textContent = formatCurrency(result.specialistCurrentProfit);
+  elements.comparisonCurrentSales.textContent = `${integerFormatter.format(result.currentSales)} vendas`;
+  elements.comparisonCurrentMargin.textContent = `margem ${formatPercent(result.specialistMargin)}`;
+
+  elements.comparisonTotalProfit.textContent = formatCurrency(result.specialistTotalProfitWithBmf);
+  elements.comparisonTotalSales.textContent = `${integerFormatter.format(result.currentSales + result.bmfSales)} vendas`;
+  elements.comparisonNetMargin.textContent = `margem líquida ${formatPercent(result.specialistNetIncrementalMargin)}`;
+
+  /* Banner de crescimento */
+  elements.growthAmount.textContent = formatSignedCurrency(result.specialistIncrementalNetProfit);
+  elements.growthText.textContent = `de lucro adicional por mês (${formatPercent(Math.abs(result.growthPercent))})`;
+
+  /* ROI */
+  elements.specialistRoi.textContent = formatRatio(result.profitRoi);
+  elements.specialistRoiText.textContent = `A cada R$ 1 em comissão, ${formatCurrency(Math.abs(result.profitRoi))} em lucro novo.`;
+  elements.specialistCommission.textContent = formatCurrency(result.commissionPaid);
+  elements.specialistCommissionText.textContent = `${formatPercent(result.totalCommissionRate)} sobre ${formatCurrency(result.incrementalGmv)} — apenas sobre vendas BMF.`;
   elements.consultantRevenue.textContent = formatSignedCurrency(result.consultantRevenue);
   elements.consultantOpportunities.textContent = integerFormatter.format(result.bmfSales);
   elements.consultantTakeRate.textContent = formatPercent(result.consultantTakeRate);

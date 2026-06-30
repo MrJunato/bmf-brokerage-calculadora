@@ -184,40 +184,47 @@
            Visão do especialista (oculta no Consolidado)
            ============================================================ -->
         <div class="specialist-view">
-          <section class="specialist-hero" aria-labelledby="specialist-title">
-            <div>
-              <p class="section-kicker">Para o especialista vendedor</p>
-              <h3 id="specialist-title">Lucro incremental líquido com BMF</h3>
-              <strong id="specialistIncrementalNetProfit">R$ 0</strong>
-              <span id="specialistHeroText">Lucro adicional após aplicar sua margem atual e descontar a comissão BMF.</span>
-              <p class="margin-alert" id="specialistMarginAlert" hidden>A comissão supera a margem atual nesta simulação. Revise a comissão, margem ou volume incremental.</p>
+          <div class="comparison-hero">
+            <div class="comparison-card baseline">
+              <p class="comparison-label">Sem BMF</p>
+              <strong id="comparisonCurrentProfit">R$ 0</strong>
+              <span>Lucro mensal atual</span>
+              <div class="comparison-detail">
+                <span id="comparisonCurrentSales">0 vendas</span>
+                <span id="comparisonCurrentMargin">margem 0%</span>
+              </div>
             </div>
-            <div class="hero-side">
-              <span>Lucro total estimado com BMF</span>
-              <strong id="specialistTotalProfitWithBmf">R$ 0</strong>
-            </div>
-          </section>
 
-          <div class="insight-grid">
-            <article class="insight-card">
-              <span>Custo de aquisição via comissão</span>
-              <strong id="commissionTradeoff">R$ 0</strong>
-              <p id="commissionTradeoffText">Comissão para abrir venda incremental.</p>
+            <div class="comparison-arrow" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </div>
+
+            <div class="comparison-card with-bmf">
+              <p class="comparison-label">Com BMF</p>
+              <strong id="comparisonTotalProfit">R$ 0</strong>
+              <span>Lucro mensal estimado</span>
+              <div class="comparison-detail">
+                <span id="comparisonTotalSales">0 vendas</span>
+                <span id="comparisonNetMargin">margem líquida 0%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="growth-banner">
+            <strong id="growthAmount">+R$ 0</strong>
+            <span id="growthText">de lucro adicional por mês</span>
+          </div>
+
+          <div class="roi-grid">
+            <article class="roi-card">
+              <span>Retorno sobre o investimento</span>
+              <strong id="specialistRoi">0x</strong>
+              <p id="specialistRoiText">A cada R$ 1 em comissão, R$ 0 em lucro novo.</p>
             </article>
-            <article class="insight-card">
-              <span>GMV incremental via BMF</span>
-              <strong id="efficiencyRatio">0x</strong>
-              <p id="efficiencyRatioText">Venda incremental antes de margem e comissão.</p>
-            </article>
-            <article class="insight-card">
-              <span>Margem atual</span>
-              <strong id="marginBefore">0%</strong>
-              <p>Margem bruta do especialista antes da BMF.</p>
-            </article>
-            <article class="insight-card">
-              <span>Margem líquida após BMF</span>
-              <strong id="marginAfter">0%</strong>
-              <p>Sua margem incremental após descontar a comissão BMF.</p>
+            <article class="roi-card">
+              <span>Investimento BMF (comissão)</span>
+              <strong id="specialistCommission">R$ 0</strong>
+              <p id="specialistCommissionText">Apenas sobre as vendas que a BMF trouxer.</p>
             </article>
           </div>
         </div>
