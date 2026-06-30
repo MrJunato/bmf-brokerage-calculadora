@@ -680,6 +680,15 @@ h3 {
   border-radius: 10px;
 }
 
+.distribution-grid strong {
+  display: block;
+  color: var(--text);
+  font-size: var(--fs-number-lg);
+  font-weight: 700;
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+}
+
 /* ============================================================
    Painel do consultor
    ============================================================ */
@@ -719,6 +728,15 @@ h3 {
   background: var(--surface);
   border: 1px solid rgba(14, 124, 102, 0.14);
   border-radius: 8px;
+}
+
+.consultant-metrics strong {
+  display: block;
+  color: var(--text);
+  font-size: var(--fs-number-md);
+  font-weight: 700;
+  line-height: 1.12;
+  overflow-wrap: anywhere;
 }
 
 /* ============================================================
@@ -1173,7 +1191,6 @@ h3 {
 
   /* ---- Mantém 1 coluna onde 2 não caberiam ---- */
   .comparison-hero,
-  .specialist-hero,
   .consultant-panel,
   .distribution-grid,
   .breakdown-grid {
@@ -1186,10 +1203,6 @@ h3 {
 
   .comparison-card {
     padding: 16px;
-  }
-
-  .roi-grid {
-    grid-template-columns: 1fr;
   }
 
   /* ---- Redução de espaçamento ---- */
