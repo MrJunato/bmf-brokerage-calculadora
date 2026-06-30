@@ -1,0 +1,1036 @@
+/* ============================================================
+   BMF Brokerage — Design System v2
+   Escala tipográfica contida · Hierarquia clara · Ritmo consistente
+   ============================================================ */
+
+:root {
+  --page: #f3f6f4;
+  --surface: #ffffff;
+  --surface-muted: #eef3f1;
+  --text: #17211f;
+  --muted: #697773;
+  --line: #d8e0dd;
+  --platform: #0e7c66;
+  --consultant: #5f58a8;
+  --specialist: #a2631f;
+  --accent-soft: #f4f8ee;
+  --danger: #a53636;
+  --danger-bg: #fff0f0;
+  --shadow: 0 18px 48px rgba(24, 39, 35, 0.1);
+  --shadow-sm: 0 1px 3px rgba(24, 39, 35, 0.06);
+
+  /* Escala tipográfica — números */
+  --fs-number-xl: clamp(1.6rem, 3vw, 2.4rem);    /* Destaque principal */
+  --fs-number-lg: clamp(1.15rem, 1.8vw, 1.5rem);  /* Cards secundários */
+  --fs-number-md: clamp(1rem, 1.4vw, 1.2rem);     /* Cards menores */
+  --fs-number-sm: 0.95rem;                          /* Inline / premisse */
+
+  /* Escala tipográfica — labels */
+  --fs-label: 0.72rem;       /* Labels de cards */
+  --fs-label-lg: 0.78rem;    /* Labels de seções */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background: var(--page);
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.sidebar-open {
+  overflow: hidden;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* ============================================================
+   Shell
+   ============================================================ */
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 24px;
+  width: min(1240px, calc(100% - 40px));
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 28px 0 40px;
+}
+
+.parameters-panel,
+.results-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+}
+
+.parameters-panel {
+  align-self: start;
+  position: sticky;
+  top: 28px;
+  padding: 20px;
+}
+
+.results-panel {
+  padding: 24px 28px 28px;
+}
+
+/* ============================================================
+   Headers & headings
+   ============================================================ */
+
+.panel-header,
+.results-header,
+.section-heading {
+  margin-bottom: 20px;
+}
+
+.panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.eyebrow,
+.section-kicker {
+  margin: 0 0 4px;
+  color: var(--platform);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  letter-spacing: -0.01em;
+  line-height: 1.18;
+}
+
+h1 {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: clamp(1.15rem, 1.8vw, 1.55rem);
+  font-weight: 700;
+  color: var(--text);
+}
+
+h3 {
+  font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ============================================================
+   Mobile toggles
+   ============================================================ */
+
+.mobile-parameters-button,
+.close-sidebar {
+  display: none;
+}
+
+/* ============================================================
+   Tabs — edição (sidebar)
+   ============================================================ */
+
+.category-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.category-tab {
+  min-width: 0;
+  min-height: 38px;
+  padding: 0 8px;
+  color: var(--text);
+  background: #fbfcfc;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.82rem;
+  transition: background 120ms, border-color 120ms;
+}
+
+.category-tab.is-active {
+  background: rgba(14, 124, 102, 0.08);
+  border-color: rgba(14, 124, 102, 0.4);
+}
+
+/* ============================================================
+   Tabs — resultados (abas de navegação reais)
+   ============================================================ */
+
+.result-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 22px;
+  border-bottom: 2px solid var(--line);
+}
+
+.result-tab {
+  position: relative;
+  min-width: 0;
+  padding: 10px 20px;
+  color: var(--muted);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  font-weight: 600;
+  font-size: 0.88rem;
+  transition: color 150ms;
+}
+
+.result-tab::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -2px 0;
+  height: 2px;
+  background: var(--platform);
+  transform: scaleX(0);
+  transition: transform 180ms ease;
+}
+
+.result-tab.is-active {
+  color: var(--platform);
+  background: transparent;
+  border: none;
+}
+
+.result-tab.is-active::after {
+  transform: scaleX(1);
+}
+
+.result-tab:hover,
+.result-tab:focus-visible {
+  color: var(--platform);
+  outline: none;
+}
+
+/* ============================================================
+   Formulário
+   ============================================================ */
+
+.parameters-form {
+  display: grid;
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 5px;
+}
+
+.field label,
+.split-fieldset legend {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.field input,
+.field select,
+.input-prefix,
+.input-suffix {
+  width: 100%;
+  min-height: 42px;
+  color: var(--text);
+  background: #fbfcfc;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.field input,
+.field select {
+  padding: 0 11px;
+}
+
+.input-prefix,
+.input-suffix {
+  display: grid;
+  align-items: center;
+  overflow: hidden;
+}
+
+.input-prefix {
+  grid-template-columns: auto 1fr;
+}
+
+.input-suffix {
+  grid-template-columns: 1fr auto;
+}
+
+.input-prefix span,
+.input-suffix span {
+  display: grid;
+  min-width: 42px;
+  height: 100%;
+  place-items: center;
+  color: var(--muted);
+  background: var(--surface-muted);
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+.input-prefix input,
+.input-suffix input {
+  min-width: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: var(--platform);
+  outline: 3px solid rgba(14, 124, 102, 0.12);
+}
+
+.input-prefix:focus-within,
+.input-suffix:focus-within,
+.split-control:focus-within {
+  border-color: var(--platform);
+  outline: 3px solid rgba(14, 124, 102, 0.12);
+}
+
+.input-prefix:focus-within input,
+.input-suffix:focus-within input {
+  outline: none;
+}
+
+/* ============================================================
+   Split de comissão
+   ============================================================ */
+
+.split-fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.split-fieldset legend {
+  margin-bottom: 5px;
+}
+
+.split-control {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  min-height: 58px;
+  overflow: hidden;
+  background: #fbfcfc;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.split-side {
+  display: grid;
+  gap: 2px;
+  padding: 8px 10px;
+}
+
+.split-side span {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.split-side input {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  color: var(--text);
+  background: transparent;
+  border: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.split-side input:focus {
+  outline: none;
+}
+
+.split-divider {
+  background: var(--line);
+}
+
+/* ============================================================
+   Seções expansíveis
+   ============================================================ */
+
+.advanced-section {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfcfc;
+}
+
+.advanced-section summary {
+  padding: 12px 14px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.advanced-fields {
+  display: grid;
+  gap: 14px;
+  padding: 0 14px 14px;
+}
+
+/* ============================================================
+   Botões
+   ============================================================ */
+
+.secondary-button {
+  min-height: 40px;
+  width: 100%;
+  padding: 0 14px;
+  color: var(--text);
+  background: var(--surface-muted);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.84rem;
+  transition: background 120ms, border-color 120ms;
+}
+
+.secondary-button:hover,
+.secondary-button:focus-visible {
+  background: #e5ece8;
+  border-color: var(--platform);
+  outline: none;
+}
+
+.category-tab:hover,
+.category-tab:focus-visible {
+  border-color: var(--platform);
+  outline: none;
+}
+
+/* ============================================================
+   Alertas
+   ============================================================ */
+
+.alert {
+  margin-top: 14px;
+  padding: 12px 14px;
+  color: var(--danger);
+  background: var(--danger-bg);
+  border: 1px solid rgba(165, 54, 54, 0.28);
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.84rem;
+}
+
+/* ============================================================
+   Cartão de premissas (topo dos resultados)
+   ============================================================ */
+
+.premise-card {
+  display: grid;
+  grid-template-columns: 1.2fr repeat(3, 1fr);
+  gap: 1px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.premise-card div {
+  min-height: 66px;
+  padding: 12px 14px;
+  background: #f8faf9;
+}
+
+/* Label padrão para TODOS os cards */
+.premise-card span,
+.insight-card span,
+.consultant-metrics span,
+.distribution-grid span,
+.hero-side span {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--muted);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.premise-card strong {
+  display: block;
+  color: var(--text);
+  font-size: var(--fs-number-sm);
+  font-weight: 700;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+/* ============================================================
+   Hero do especialista
+   ============================================================ */
+
+.specialist-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(200px, 0.6fr);
+  gap: 20px;
+  align-items: stretch;
+  margin-bottom: 20px;
+  padding: 24px;
+  background: linear-gradient(135deg, #fdf8f2 0%, #faf3e8 100%);
+  border: 1px solid rgba(162, 99, 31, 0.16);
+  border-radius: 10px;
+}
+
+.specialist-hero strong {
+  display: block;
+  margin: 8px 0 6px;
+  color: var(--specialist);
+  font-size: var(--fs-number-xl);
+  font-weight: 800;
+  line-height: 1.06;
+  overflow-wrap: anywhere;
+}
+
+.specialist-hero > div > span,
+.insight-card p {
+  color: var(--muted);
+  font-weight: 500;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.hero-side {
+  display: grid;
+  align-content: center;
+  min-height: 130px;
+  padding: 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.hero-side strong {
+  margin: 0;
+  color: var(--text);
+  font-size: var(--fs-number-lg);
+  font-weight: 700;
+}
+
+/* ============================================================
+   Grids de insight / distribuição / operação
+   ============================================================ */
+
+.insight-grid,
+.distribution-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.insight-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 20px;
+}
+
+.insight-card,
+.distribution-grid article {
+  min-height: 94px;
+  padding: 18px;
+  background: #fbfcfc;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+/* Números em cards comuns */
+.insight-card strong,
+.distribution-grid strong,
+.consultant-panel > div > strong,
+.consultant-metrics strong {
+  display: block;
+  color: var(--text);
+  font-size: var(--fs-number-lg);
+  font-weight: 700;
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+}
+
+.insight-card p {
+  margin: 6px 0 0;
+  font-size: 0.84rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* ============================================================
+   Painel do consultor
+   ============================================================ */
+
+.consultant-panel,
+.distribution-panel {
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.consultant-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.85fr);
+  gap: 20px;
+  align-items: center;
+  background: #f7f6fc;
+  border-color: rgba(95, 88, 168, 0.16);
+}
+
+.consultant-panel > div > strong {
+  color: var(--consultant);
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  font-weight: 800;
+}
+
+.consultant-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.consultant-metrics div {
+  min-height: 88px;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid rgba(95, 88, 168, 0.14);
+  border-radius: 8px;
+}
+
+/* ============================================================
+   Painel de distribuição
+   ============================================================ */
+
+.distribution-panel {
+  background: #fbfcfc;
+}
+
+.distribution-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.distribution-grid article:first-child {
+  border-left: 3px solid var(--specialist);
+}
+
+.distribution-grid article:nth-child(2) {
+  border-left: 3px solid var(--consultant);
+}
+
+.distribution-grid article:nth-child(3) {
+  border-left: 3px solid var(--platform);
+}
+
+/* ============================================================
+   Detalhes da operação
+   ============================================================ */
+
+.operation-details {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-muted);
+}
+
+.operation-details summary {
+  padding: 12px 16px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+}
+
+.operation-details[open] {
+  padding-top: 10px;
+}
+
+.operation-section {
+  padding: 0 14px;
+  margin-bottom: 6px;
+}
+
+.operation-section + .operation-section {
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.operation-subtitle {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.operation-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.operation-grid div {
+  min-height: 64px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  transition: border-color 140ms;
+}
+
+.operation-grid div:hover {
+  border-color: rgba(14, 124, 102, 0.25);
+}
+
+.operation-grid span {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--muted);
+  font-size: var(--fs-label);
+  font-weight: 600;
+}
+
+.operation-grid strong {
+  display: block;
+  color: var(--text);
+  font-size: var(--fs-number-md);
+  font-weight: 700;
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+}
+
+.operation-result {
+  margin: 12px 14px 16px;
+  padding: 18px;
+  background: rgba(14, 124, 102, 0.06);
+  border: 1px solid rgba(14, 124, 102, 0.22);
+  border-radius: 10px;
+}
+
+.operation-result span {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--muted);
+  font-size: var(--fs-label);
+  font-weight: 600;
+}
+
+.operation-result strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--platform);
+  font-size: var(--fs-number-lg);
+  font-weight: 800;
+  line-height: 1.08;
+  overflow-wrap: anywhere;
+}
+
+.operation-result p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+/* ============================================================
+   Visão consolidada
+   ============================================================ */
+
+.consolidated-summary {
+  margin-bottom: 20px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f6faf8 0%, #eef6f2 100%);
+  border: 1px solid rgba(14, 124, 102, 0.16);
+  border-radius: 10px;
+}
+
+.consolidated-summary h3 {
+  margin: 0 0 14px;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.consolidated-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.consolidated-summary-grid div {
+  min-height: 74px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.consolidated-summary-grid span {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--muted);
+  font-size: var(--fs-label);
+  font-weight: 600;
+}
+
+.consolidated-summary-grid strong {
+  display: block;
+  color: var(--text);
+  font-size: var(--fs-number-lg);
+  font-weight: 700;
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+}
+
+.consolidated-summary-grid div:last-child strong {
+  color: var(--platform);
+}
+
+.breakdown-section {
+  margin-bottom: 20px;
+}
+
+.breakdown-section h3 {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.breakdown-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.breakdown-card {
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.breakdown-card h4 {
+  margin: 0 0 10px;
+  padding-bottom: 8px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text);
+  border-bottom: 2px solid var(--surface-muted);
+}
+
+.breakdown-card[data-breakdown="carro_luxo"] h4 { border-bottom-color: rgba(162, 99, 31, 0.3); }
+.breakdown-card[data-breakdown="barco"] h4     { border-bottom-color: rgba(95, 88, 168, 0.3); }
+.breakdown-card[data-breakdown="aeronave"] h4  { border-bottom-color: rgba(14, 124, 102, 0.3); }
+
+.breakdown-rows {
+  display: grid;
+  gap: 8px;
+}
+
+.breakdown-rows div {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.breakdown-rows span {
+  color: var(--muted);
+  font-size: var(--fs-label);
+  font-weight: 500;
+}
+
+.breakdown-rows strong {
+  color: var(--text);
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+/* ============================================================
+   Backdrop do sidebar (mobile)
+   ============================================================ */
+
+.sidebar-backdrop {
+  display: none;
+}
+
+/* ============================================================
+   Responsivo — tablet
+   ============================================================ */
+
+@media (max-width: 980px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+    width: min(100% - 32px, 1240px);
+  }
+
+  .parameters-panel {
+    position: static;
+  }
+
+  .consolidated-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .breakdown-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ============================================================
+   Responsivo — mobile
+   ============================================================ */
+
+@media (max-width: 760px) {
+  .mobile-parameters-button {
+    display: inline-flex;
+    position: fixed;
+    right: 16px;
+    bottom: 20px;
+    z-index: 40;
+    min-height: 46px;
+    padding: 0 20px;
+    align-items: center;
+    color: #ffffff;
+    background: var(--platform);
+    border: 0;
+    border-radius: 999px;
+    box-shadow: 0 12px 30px rgba(14, 124, 102, 0.28);
+    font-weight: 700;
+    font-size: 0.88rem;
+  }
+
+  .close-sidebar {
+    display: inline-flex;
+    min-height: 34px;
+    align-items: center;
+    padding: 0 10px;
+    color: var(--text);
+    background: var(--surface-muted);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.82rem;
+  }
+
+  .app-shell {
+    display: block;
+    width: min(100% - 20px, 1240px);
+    padding: 12px 0 80px;
+  }
+
+  .parameters-panel {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 60;
+    width: min(88vw, 360px);
+    height: 100vh;
+    overflow-y: auto;
+    border-radius: 0 10px 10px 0;
+    transform: translateX(-105%);
+    transition: transform 200ms ease;
+  }
+
+  body.sidebar-open .parameters-panel {
+    transform: translateX(0);
+  }
+
+  .sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: rgba(23, 33, 31, 0.36);
+  }
+
+  body.sidebar-open .sidebar-backdrop {
+    display: block;
+  }
+
+  .results-panel {
+    padding: 16px;
+  }
+
+  .result-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .result-tab {
+    flex-shrink: 0;
+    padding: 10px 14px;
+    font-size: 0.82rem;
+  }
+
+  .premise-card,
+  .specialist-hero,
+  .insight-grid,
+  .consultant-panel,
+  .consultant-metrics,
+  .distribution-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .operation-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .specialist-hero {
+    padding: 18px;
+  }
+
+  .hero-side {
+    min-height: auto;
+  }
+
+  .specialist-hero strong {
+    font-size: clamp(1.4rem, 6vw, 1.9rem);
+  }
+
+  .consultant-panel > div > strong {
+    font-size: clamp(1.2rem, 5vw, 1.6rem);
+  }
+
+  .consolidated-summary-grid,
+  .breakdown-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .consolidated-summary {
+    padding: 16px;
+  }
+
+  .breakdown-card {
+    padding: 12px 14px;
+  }
+}

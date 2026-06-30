@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calculadora BMF Brokerage</title>
+    <meta
+      name="description"
+      content="Simulador comercial para explicar a receita incremental gerada pela BMF Brokerage."
+    >
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <button class="mobile-parameters-button" id="openParameters" type="button">
+      Premissas
+    </button>
+    <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
+
+    <main class="app-shell">
+      <aside class="parameters-panel" id="parametersPanel" aria-labelledby="calculator-title">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">BMF Brokerage</p>
+            <h1 id="calculator-title">Premissas por categoria</h1>
+          </div>
+          <button class="close-sidebar" id="closeParameters" type="button" aria-label="Fechar premissas">
+            Fechar
+          </button>
+        </div>
+
+        <div class="category-tabs" role="tablist" aria-label="Categorias para editar">
+          <button class="category-tab is-active" type="button" role="tab" aria-selected="true" data-edit-category="carro_luxo">
+            Carro
+          </button>
+          <button class="category-tab" type="button" role="tab" aria-selected="false" data-edit-category="barco">
+            Barco
+          </button>
+          <button class="category-tab" type="button" role="tab" aria-selected="false" data-edit-category="aeronave">
+            Aeronave
+          </button>
+        </div>
+
+        <form class="parameters-form" id="calculatorForm">
+          <div class="field">
+            <label for="averageTicket">Ticket médio</label>
+            <div class="input-prefix">
+              <span>R$</span>
+              <input id="averageTicket" name="averageTicket" type="text" inputmode="numeric" value="1.000.000">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="currentSales">Vendas atuais</label>
+            <input id="currentSales" name="currentSales" type="number" min="0" step="1" value="2">
+          </div>
+
+          <div class="field">
+            <label for="bmfSales">Novas vendas via BMF</label>
+            <input id="bmfSales" name="bmfSales" type="number" min="0" step="1" value="1">
+          </div>
+
+          <div class="field">
+            <label for="totalCommission">Comissão total</label>
+            <div class="input-suffix">
+              <input id="totalCommission" name="totalCommission" type="text" inputmode="decimal" value="5">
+              <span>%</span>
+            </div>
+          </div>
+
+          <fieldset class="split-fieldset">
+            <legend>Split da comissão</legend>
+            <div class="split-control">
+              <label class="split-side" for="platformSplit">
+                <span>Plataforma</span>
+                <input id="platformSplit" name="platformSplit" type="text" inputmode="decimal" value="50">
+              </label>
+              <div class="split-divider" aria-hidden="true"></div>
+              <label class="split-side" for="consultantSplit">
+                <span>Consultor</span>
+                <input id="consultantSplit" name="consultantSplit" type="text" inputmode="decimal" value="50">
+              </label>
+            </div>
+          </fieldset>
+
+          <details class="advanced-section">
+            <summary>Detalhes operacionais</summary>
+            <div class="advanced-fields">
+              <div class="field">
+                <label for="taxRate">Imposto estimado</label>
+                <div class="input-suffix">
+                  <input id="taxRate" name="taxRate" type="text" inputmode="decimal" value="9,65">
+                  <span>%</span>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="variableCosts">Custos variáveis da plataforma</label>
+                <div class="input-prefix">
+                  <span>R$</span>
+                  <input id="variableCosts" name="variableCosts" type="text" inputmode="numeric" value="0">
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="fixedCosts">Custos fixos</label>
+                <div class="input-prefix">
+                  <span>R$</span>
+                  <input id="fixedCosts" name="fixedCosts" type="text" inputmode="numeric" value="0">
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <button class="secondary-button" id="resetDefaults" type="button">
+            Restaurar premissas
+          </button>
+        </form>
+
+        <div class="alert" id="validationAlert" role="alert" hidden></div>
+      </aside>
+
+      <section class="results-panel" aria-labelledby="results-title">
+        <div class="results-header">
+          <div>
+            <p class="eyebrow">Simulação comercial mensal</p>
+            <h2 id="results-title">Quanto a BMF adiciona para cada participante</h2>
+          </div>
+        </div>
+
+        <div class="result-tabs" role="tablist" aria-label="Resultados por categoria">
+          <button class="result-tab is-active" type="button" role="tab" aria-selected="true" data-result-category="carro_luxo">
+            Carro
+          </button>
+          <button class="result-tab" type="button" role="tab" aria-selected="false" data-result-category="barco">
+            Barco
+          </button>
+          <button class="result-tab" type="button" role="tab" aria-selected="false" data-result-category="aeronave">
+            Aeronave
+          </button>
+          <button class="result-tab" type="button" role="tab" aria-selected="false" data-result-category="consolidado">
+            Consolidado
+          </button>
+        </div>
+
+        <!-- ============================================================
+           Premissas (visível em todas as abas)
+           ============================================================ -->
+        <div class="premise-card" aria-label="Premissas do resultado selecionado">
+          <div>
+            <span>Categoria</span>
+            <strong id="categoryResult">-</strong>
+          </div>
+          <div>
+            <span>Ticket médio</span>
+            <strong id="averageTicketResult">R$ 0</strong>
+          </div>
+          <div>
+            <span>Vendas atuais</span>
+            <strong id="currentSalesResult">0</strong>
+          </div>
+          <div>
+            <span>Novas vendas BMF</span>
+            <strong id="bmfSalesResult">0</strong>
+          </div>
+        </div>
+
+        <!-- ============================================================
+           Visão do especialista (oculta no Consolidado)
+           ============================================================ -->
+        <div class="specialist-view">
+          <section class="specialist-hero" aria-labelledby="specialist-title">
+            <div>
+              <p class="section-kicker">Para o especialista vendedor</p>
+              <h3 id="specialist-title">Venda incremental líquida</h3>
+              <strong id="specialistNetIncremental">R$ 0</strong>
+              <span id="specialistHeroText">Receita nova depois da comissão BMF.</span>
+            </div>
+            <div class="hero-side">
+              <span>Receita total estimada com BMF</span>
+              <strong id="specialistTotalWithBmf">R$ 0</strong>
+            </div>
+          </section>
+
+          <div class="insight-grid">
+            <article class="insight-card">
+              <span>Custo de aquisição via comissão</span>
+              <strong id="commissionTradeoff">R$ 0</strong>
+              <p id="commissionTradeoffText">Comissão para abrir venda incremental.</p>
+            </article>
+            <article class="insight-card">
+              <span>Eficiência comercial</span>
+              <strong id="efficiencyRatio">0x</strong>
+              <p id="efficiencyRatioText">Venda incremental gerada para cada R$ 1 de comissão.</p>
+            </article>
+          </div>
+        </div>
+
+        <!-- ============================================================
+           Visão consolidada (apenas na aba Consolidado)
+           ============================================================ -->
+        <div class="consolidated-view" hidden>
+          <section class="consolidated-summary" aria-labelledby="consolidated-summary-title">
+            <h3 id="consolidated-summary-title">Resumo consolidado</h3>
+            <div class="consolidated-summary-grid">
+              <div>
+                <span>GMV incremental total</span>
+                <strong id="consolidatedGmv">R$ 0</strong>
+              </div>
+              <div>
+                <span>Comissão total paga</span>
+                <strong id="consolidatedCommission">R$ 0</strong>
+              </div>
+              <div>
+                <span>Total de novas vendas BMF</span>
+                <strong id="consolidatedSales">0</strong>
+              </div>
+              <div>
+                <span>Resultado líquido da plataforma</span>
+                <strong id="consolidatedPlatformResult">R$ 0</strong>
+              </div>
+            </div>
+          </section>
+
+          <section class="breakdown-section" aria-labelledby="breakdown-title">
+            <h3 id="breakdown-title">Quebra por categoria</h3>
+            <div class="breakdown-grid">
+              <article class="breakdown-card" data-breakdown="carro_luxo">
+                <h4>Carro de luxo</h4>
+                <div class="breakdown-rows">
+                  <div><span>GMV incremental</span><strong id="breakdownCarGmv">R$ 0</strong></div>
+                  <div><span>Comissão paga</span><strong id="breakdownCarCommission">R$ 0</strong></div>
+                  <div><span>Receita do consultor</span><strong id="breakdownCarConsultant">R$ 0</strong></div>
+                  <div><span>Receita da plataforma</span><strong id="breakdownCarPlatform">R$ 0</strong></div>
+                </div>
+              </article>
+              <article class="breakdown-card" data-breakdown="barco">
+                <h4>Barco</h4>
+                <div class="breakdown-rows">
+                  <div><span>GMV incremental</span><strong id="breakdownBoatGmv">R$ 0</strong></div>
+                  <div><span>Comissão paga</span><strong id="breakdownBoatCommission">R$ 0</strong></div>
+                  <div><span>Receita do consultor</span><strong id="breakdownBoatConsultant">R$ 0</strong></div>
+                  <div><span>Receita da plataforma</span><strong id="breakdownBoatPlatform">R$ 0</strong></div>
+                </div>
+              </article>
+              <article class="breakdown-card" data-breakdown="aeronave">
+                <h4>Aeronave</h4>
+                <div class="breakdown-rows">
+                  <div><span>GMV incremental</span><strong id="breakdownAircraftGmv">R$ 0</strong></div>
+                  <div><span>Comissão paga</span><strong id="breakdownAircraftCommission">R$ 0</strong></div>
+                  <div><span>Receita do consultor</span><strong id="breakdownAircraftConsultant">R$ 0</strong></div>
+                  <div><span>Receita da plataforma</span><strong id="breakdownAircraftPlatform">R$ 0</strong></div>
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+
+        <!-- ============================================================
+           Painel do consultor (visível em todas as abas)
+           ============================================================ -->
+        <section class="consultant-panel" aria-labelledby="consultant-title">
+          <div>
+            <p class="section-kicker">Para o consultor assessor</p>
+            <h3 id="consultant-title">Receita nova para o consultor</h3>
+            <strong id="consultantRevenue">R$ 0</strong>
+          </div>
+          <div class="consultant-metrics">
+            <div>
+              <span>Oportunidades BMF</span>
+              <strong id="consultantOpportunities">0</strong>
+            </div>
+            <div>
+              <span>Take rate do consultor</span>
+              <strong id="consultantTakeRate">0%</strong>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================
+           Distribuição (visível em todas as abas)
+           ============================================================ -->
+        <section class="distribution-panel" aria-labelledby="distribution-title">
+          <div class="section-heading">
+            <p class="section-kicker">Como a comissão se distribui</p>
+            <h3 id="distribution-title">A comissão viabiliza a venda incremental</h3>
+          </div>
+          <div class="distribution-grid">
+            <article>
+              <span>Especialista paga</span>
+              <strong id="commissionPaid">R$ 0</strong>
+            </article>
+            <article>
+              <span>Consultor recebe</span>
+              <strong id="consultantRevenueDistribution">R$ 0</strong>
+            </article>
+            <article>
+              <span>Plataforma recebe</span>
+              <strong id="platformRevenue">R$ 0</strong>
+            </article>
+          </div>
+        </section>
+
+        <!-- ============================================================
+           Detalhes da operação (visível em todas as abas)
+           ============================================================ -->
+        <details class="operation-details">
+          <summary>Detalhes da operação</summary>
+
+          <div class="specialist-view">
+            <div class="operation-section">
+              <h4 class="operation-subtitle">Visão do especialista</h4>
+              <div class="operation-grid">
+                <div>
+                  <span>Receita atual do especialista</span>
+                  <strong id="currentRevenue">R$ 0</strong>
+                </div>
+                <div>
+                  <span>GMV incremental via BMF</span>
+                  <strong id="incrementalGmv">R$ 0</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="operation-section">
+            <h4 class="operation-subtitle">Estrutura de custos da plataforma</h4>
+            <div class="operation-grid">
+              <div>
+                <span>Comissão total sobre GMV</span>
+                <strong id="totalCommissionRate">0%</strong>
+              </div>
+              <div>
+                <span>Take rate da plataforma</span>
+                <strong id="platformTakeRate">0%</strong>
+              </div>
+              <div>
+                <span>Impostos sobre receita</span>
+                <strong id="taxValue">R$ 0</strong>
+              </div>
+              <div>
+                <span>Custos operacionais</span>
+                <strong id="totalCosts">R$ 0</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="operation-result">
+            <span>Resultado líquido da plataforma</span>
+            <strong id="platformFinalResult">R$ 0</strong>
+            <p>Receita da plataforma após impostos e custos operacionais.</p>
+          </div>
+        </details>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
