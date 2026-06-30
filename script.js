@@ -182,6 +182,21 @@ function formatCurrency(value) {
   return currencyFormatter.format(Math.round(value));
 }
 
+function formatSignedCurrency(value) {
+  const rounded = Math.round(value);
+  const formatted = formatCurrency(Math.abs(rounded));
+
+  if (rounded > 0) {
+    return `+${formatted}`;
+  }
+
+  if (rounded < 0) {
+    return `-${formatted}`;
+  }
+
+  return formatted;
+}
+
 function formatPercent(value) {
   return `${percentFormatter.format(value)}%`;
 }
@@ -426,7 +441,7 @@ function toggleViewMode(isConsolidated) {
 function renderConsolidatedView(resultsByCategory, consolidated) {
   elements.consolidatedGmv.textContent = formatCurrency(consolidated.incrementalGmv);
   elements.consolidatedGrossProfit.textContent = formatCurrency(consolidated.specialistIncrementalGrossProfit);
-  elements.consolidatedNetProfit.textContent = formatCurrency(consolidated.specialistIncrementalNetProfit);
+  elements.consolidatedNetProfit.textContent = formatSignedCurrency(consolidated.specialistIncrementalNetProfit);
   elements.consolidatedWeightedMargin.textContent = formatPercent(consolidated.specialistMargin);
   elements.consolidatedCommission.textContent = formatCurrency(consolidated.commissionPaid);
   elements.consolidatedSales.textContent = integerFormatter.format(consolidated.bmfSales);
@@ -438,21 +453,21 @@ function renderConsolidatedView(resultsByCategory, consolidated) {
 
   elements.breakdownCarGmv.textContent = formatCurrency(car.incrementalGmv);
   elements.breakdownCarGrossProfit.textContent = formatCurrency(car.specialistIncrementalGrossProfit);
-  elements.breakdownCarNetProfit.textContent = formatCurrency(car.specialistIncrementalNetProfit);
+  elements.breakdownCarNetProfit.textContent = formatSignedCurrency(car.specialistIncrementalNetProfit);
   elements.breakdownCarCommission.textContent = formatCurrency(car.commissionPaid);
   elements.breakdownCarConsultant.textContent = formatCurrency(car.consultantRevenue);
   elements.breakdownCarPlatform.textContent = formatCurrency(car.platformRevenue);
 
   elements.breakdownBoatGmv.textContent = formatCurrency(boat.incrementalGmv);
   elements.breakdownBoatGrossProfit.textContent = formatCurrency(boat.specialistIncrementalGrossProfit);
-  elements.breakdownBoatNetProfit.textContent = formatCurrency(boat.specialistIncrementalNetProfit);
+  elements.breakdownBoatNetProfit.textContent = formatSignedCurrency(boat.specialistIncrementalNetProfit);
   elements.breakdownBoatCommission.textContent = formatCurrency(boat.commissionPaid);
   elements.breakdownBoatConsultant.textContent = formatCurrency(boat.consultantRevenue);
   elements.breakdownBoatPlatform.textContent = formatCurrency(boat.platformRevenue);
 
   elements.breakdownAircraftGmv.textContent = formatCurrency(aircraft.incrementalGmv);
   elements.breakdownAircraftGrossProfit.textContent = formatCurrency(aircraft.specialistIncrementalGrossProfit);
-  elements.breakdownAircraftNetProfit.textContent = formatCurrency(aircraft.specialistIncrementalNetProfit);
+  elements.breakdownAircraftNetProfit.textContent = formatSignedCurrency(aircraft.specialistIncrementalNetProfit);
   elements.breakdownAircraftCommission.textContent = formatCurrency(aircraft.commissionPaid);
   elements.breakdownAircraftConsultant.textContent = formatCurrency(aircraft.consultantRevenue);
   elements.breakdownAircraftPlatform.textContent = formatCurrency(aircraft.platformRevenue);
@@ -477,7 +492,7 @@ function renderResults(result, label) {
   elements.averageTicketResult.textContent = formatCurrency(result.averageTicket);
   elements.currentSalesResult.textContent = integerFormatter.format(result.currentSales);
   elements.bmfSalesResult.textContent = integerFormatter.format(result.bmfSales);
-  elements.specialistIncrementalNetProfit.textContent = formatCurrency(result.specialistIncrementalNetProfit);
+  elements.specialistIncrementalNetProfit.textContent = formatSignedCurrency(result.specialistIncrementalNetProfit);
   elements.specialistMarginAlert.hidden = result.specialistNetIncrementalMargin >= 0;
   elements.specialistHeroText.textContent = `Lucro adicional após aplicar ${formatPercent(result.specialistMargin)} de margem atual e descontar ${formatPercent(result.totalCommissionRate)} de comissão BMF.`;
   elements.specialistTotalProfitWithBmf.textContent = formatCurrency(result.specialistTotalProfitWithBmf);
@@ -487,18 +502,18 @@ function renderResults(result, label) {
   elements.efficiencyRatioText.textContent = "GMV incremental via BMF antes de margem e comissão.";
   elements.marginBefore.textContent = formatPercent(result.specialistMargin);
   elements.marginAfter.textContent = formatPercent(result.specialistNetIncrementalMargin);
-  elements.consultantRevenue.textContent = formatCurrency(result.consultantRevenue);
+  elements.consultantRevenue.textContent = formatSignedCurrency(result.consultantRevenue);
   elements.consultantOpportunities.textContent = integerFormatter.format(result.bmfSales);
   elements.consultantTakeRate.textContent = formatPercent(result.consultantTakeRate);
   elements.commissionPaid.textContent = formatCurrency(result.commissionPaid);
   elements.commissionPaidDetail.textContent = formatCurrency(result.commissionPaid);
-  elements.consultantRevenueDistribution.textContent = formatCurrency(result.consultantRevenue);
+  elements.consultantRevenueDistribution.textContent = formatSignedCurrency(result.consultantRevenue);
   elements.platformRevenue.textContent = formatCurrency(result.platformRevenue);
   elements.currentRevenue.textContent = formatCurrency(result.currentRevenue);
   elements.specialistCurrentProfit.textContent = formatCurrency(result.specialistCurrentProfit);
   elements.incrementalGmv.textContent = formatCurrency(result.incrementalGmv);
   elements.specialistIncrementalGrossProfit.textContent = formatCurrency(result.specialistIncrementalGrossProfit);
-  elements.specialistIncrementalNetProfitDetail.textContent = formatCurrency(result.specialistIncrementalNetProfit);
+  elements.specialistIncrementalNetProfitDetail.textContent = formatSignedCurrency(result.specialistIncrementalNetProfit);
   elements.totalCommissionRate.textContent = formatPercent(result.totalCommissionRate);
   elements.platformTakeRate.textContent = formatPercent(result.platformTakeRate);
   elements.taxValue.textContent = formatCurrency(result.taxValue);
