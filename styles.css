@@ -857,47 +857,49 @@ h3 {
 }
 
 /* ============================================================
-   Visão consolidada
+   Visão consolidada — Visão geral da operação
    ============================================================ */
 
-.consolidated-summary {
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
   margin-bottom: 20px;
-  padding: 20px;
-  background: linear-gradient(135deg, #f6faf8 0%, #eef6f2 100%);
-  border: 1px solid rgba(14, 124, 102, 0.16);
+}
+
+.overview-card {
+  padding: 18px;
+  background: #fbfcfc;
+  border: 1px solid var(--line);
   border-radius: 10px;
 }
 
-.consolidated-summary h3 {
-  margin: 0 0 14px;
-  font-size: 1rem;
-  color: var(--text);
+.overview-card:first-child {
+  border-color: rgba(162, 99, 31, 0.2);
+  background: #fefcf9;
 }
 
-.consolidated-summary-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
+.overview-card:nth-child(2) {
+  border-color: rgba(95, 88, 168, 0.2);
+  background: #f8f7fc;
 }
 
-.consolidated-summary-grid div {
-  min-height: 74px;
-  padding: 12px 14px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 8px;
+.overview-card:last-child {
+  border-color: rgba(14, 124, 102, 0.2);
+  background: #f9fdfb;
 }
 
-.consolidated-summary-grid span {
+.overview-card span {
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   color: var(--muted);
   font-size: var(--fs-label);
   font-weight: 600;
 }
 
-.consolidated-summary-grid strong {
+.overview-card strong {
   display: block;
+  margin-bottom: 6px;
   color: var(--text);
   font-size: var(--fs-number-lg);
   font-weight: 700;
@@ -905,12 +907,23 @@ h3 {
   overflow-wrap: anywhere;
 }
 
-.consolidated-summary-grid div:last-child strong {
-  color: var(--platform);
+.overview-card:first-child strong { color: var(--specialist); }
+.overview-card:nth-child(2) strong { color: var(--consultant); }
+.overview-card:last-child strong { color: var(--platform); }
+
+.overview-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.4;
 }
 
+/* ============================================================
+   Visão consolidada — Quebra por categoria
+   ============================================================ */
+
 .breakdown-section {
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
 
 .breakdown-section h3 {
@@ -1001,7 +1014,7 @@ h3 {
     position: static;
   }
 
-  .consolidated-summary-grid {
+  .overview-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1154,7 +1167,7 @@ h3 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .consolidated-summary-grid {
+  .overview-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1198,10 +1211,6 @@ h3 {
     font-size: clamp(1.2rem, 5vw, 1.6rem);
   }
 
-  .consolidated-summary {
-    padding: 14px;
-  }
-
   .breakdown-card {
     padding: 12px 14px;
   }
@@ -1234,7 +1243,7 @@ h3 {
   .comparison-hero,
   .growth-banner,
   .roi-grid,
-  .consolidated-summary,
+  .overview-grid,
   .breakdown-section {
     margin-bottom: 14px;
   }

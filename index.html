@@ -233,51 +233,68 @@
            Visão consolidada (apenas na aba Consolidado)
            ============================================================ -->
         <div class="consolidated-view" hidden>
-          <section class="consolidated-summary" aria-labelledby="consolidated-summary-title">
-            <h3 id="consolidated-summary-title">Resumo consolidado</h3>
-            <div class="consolidated-summary-grid">
-              <div>
-                <span>GMV incremental total</span>
-                <strong id="consolidatedGmv">R$ 0</strong>
-              </div>
-              <div>
-                <span>Lucro incremental bruto</span>
-                <strong id="consolidatedGrossProfit">R$ 0</strong>
-              </div>
-              <div>
-                <span>Lucro incremental líquido</span>
-                <strong id="consolidatedNetProfit">R$ 0</strong>
-              </div>
-              <div>
-                <span>Margem média ponderada</span>
-                <strong id="consolidatedWeightedMargin">0%</strong>
-              </div>
-              <div>
-                <span>Comissão total paga</span>
-                <strong id="consolidatedCommission">R$ 0</strong>
-              </div>
-              <div>
-                <span>Total de novas vendas BMF</span>
-                <strong id="consolidatedSales">0</strong>
-              </div>
-              <div>
-                <span>Resultado líquido da plataforma</span>
-                <strong id="consolidatedPlatformResult">R$ 0</strong>
+          <!-- Antes/Depois consolidado -->
+          <div class="comparison-hero">
+            <div class="comparison-card baseline">
+              <p class="comparison-label">Sem BMF</p>
+              <strong id="consolidatedCurrentProfit">R$ 0</strong>
+              <span>Lucro total mensal (3 categorias)</span>
+              <div class="comparison-detail">
+                <span id="consolidatedCurrentSales">0 vendas</span>
+                <span id="consolidatedCurrentMargin">margem média 0%</span>
               </div>
             </div>
-          </section>
 
+            <div class="comparison-arrow" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </div>
+
+            <div class="comparison-card with-bmf">
+              <p class="comparison-label">Com BMF</p>
+              <strong id="consolidatedTotalProfit">R$ 0</strong>
+              <span>Lucro total estimado</span>
+              <div class="comparison-detail">
+                <span id="consolidatedTotalSales">0 vendas</span>
+                <span id="consolidatedNetMargin">margem líquida 0%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Banner de crescimento consolidado -->
+          <div class="growth-banner">
+            <strong id="consolidatedGrowth">+R$ 0</strong>
+            <span id="consolidatedGrowthText">de lucro adicional com N novas vendas em 3 categorias</span>
+          </div>
+
+          <!-- Visão geral da operação -->
+          <div class="overview-grid">
+            <article class="overview-card">
+              <span>Comissão total</span>
+              <strong id="consolidatedCommission">R$ 0</strong>
+              <p>Investimento total dos especialistas para acessar as vendas BMF.</p>
+            </article>
+            <article class="overview-card">
+              <span>Receita total do consultor</span>
+              <strong id="consolidatedConsultantRevenue">R$ 0</strong>
+              <p>Soma do que cada consultor recebe em todas as categorias.</p>
+            </article>
+            <article class="overview-card">
+              <span>Resultado líquido da plataforma</span>
+              <strong id="consolidatedPlatformResult">R$ 0</strong>
+              <p>Receita da plataforma após impostos e custos operacionais.</p>
+            </article>
+          </div>
+
+          <!-- Quebra por categoria -->
           <section class="breakdown-section" aria-labelledby="breakdown-title">
-            <h3 id="breakdown-title">Quebra por categoria</h3>
+            <h3 id="breakdown-title">Detalhamento por categoria</h3>
             <div class="breakdown-grid">
               <article class="breakdown-card" data-breakdown="carro_luxo">
                 <h4>Carro de luxo</h4>
                 <div class="breakdown-rows">
                   <div><span>GMV incremental</span><strong id="breakdownCarGmv">R$ 0</strong></div>
-                  <div><span>Lucro bruto</span><strong id="breakdownCarGrossProfit">R$ 0</strong></div>
-                  <div><span>Lucro líquido</span><strong id="breakdownCarNetProfit">R$ 0</strong></div>
+                  <div><span>Lucro líquido do especialista</span><strong id="breakdownCarNetProfit">R$ 0</strong></div>
                   <div><span>Comissão paga</span><strong id="breakdownCarCommission">R$ 0</strong></div>
-                  <div><span>Receita do consultor</span><strong id="breakdownCarConsultant">R$ 0</strong></div>
                   <div><span>Receita da plataforma</span><strong id="breakdownCarPlatform">R$ 0</strong></div>
                 </div>
               </article>
@@ -285,10 +302,8 @@
                 <h4>Barco</h4>
                 <div class="breakdown-rows">
                   <div><span>GMV incremental</span><strong id="breakdownBoatGmv">R$ 0</strong></div>
-                  <div><span>Lucro bruto</span><strong id="breakdownBoatGrossProfit">R$ 0</strong></div>
-                  <div><span>Lucro líquido</span><strong id="breakdownBoatNetProfit">R$ 0</strong></div>
+                  <div><span>Lucro líquido do especialista</span><strong id="breakdownBoatNetProfit">R$ 0</strong></div>
                   <div><span>Comissão paga</span><strong id="breakdownBoatCommission">R$ 0</strong></div>
-                  <div><span>Receita do consultor</span><strong id="breakdownBoatConsultant">R$ 0</strong></div>
                   <div><span>Receita da plataforma</span><strong id="breakdownBoatPlatform">R$ 0</strong></div>
                 </div>
               </article>
@@ -296,10 +311,8 @@
                 <h4>Aeronave</h4>
                 <div class="breakdown-rows">
                   <div><span>GMV incremental</span><strong id="breakdownAircraftGmv">R$ 0</strong></div>
-                  <div><span>Lucro bruto</span><strong id="breakdownAircraftGrossProfit">R$ 0</strong></div>
-                  <div><span>Lucro líquido</span><strong id="breakdownAircraftNetProfit">R$ 0</strong></div>
+                  <div><span>Lucro líquido do especialista</span><strong id="breakdownAircraftNetProfit">R$ 0</strong></div>
                   <div><span>Comissão paga</span><strong id="breakdownAircraftCommission">R$ 0</strong></div>
-                  <div><span>Receita do consultor</span><strong id="breakdownAircraftConsultant">R$ 0</strong></div>
                   <div><span>Receita da plataforma</span><strong id="breakdownAircraftPlatform">R$ 0</strong></div>
                 </div>
               </article>

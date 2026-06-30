@@ -114,31 +114,29 @@ const elements = {
   /* Visão consolidada */
   specialistViews: document.querySelectorAll(".specialist-view"),
   consolidatedViews: document.querySelectorAll(".consolidated-view"),
-  consolidatedGmv: document.querySelector("#consolidatedGmv"),
-  consolidatedGrossProfit: document.querySelector("#consolidatedGrossProfit"),
-  consolidatedNetProfit: document.querySelector("#consolidatedNetProfit"),
-  consolidatedWeightedMargin: document.querySelector("#consolidatedWeightedMargin"),
+  consolidatedCurrentProfit: document.querySelector("#consolidatedCurrentProfit"),
+  consolidatedCurrentSales: document.querySelector("#consolidatedCurrentSales"),
+  consolidatedCurrentMargin: document.querySelector("#consolidatedCurrentMargin"),
+  consolidatedTotalProfit: document.querySelector("#consolidatedTotalProfit"),
+  consolidatedTotalSales: document.querySelector("#consolidatedTotalSales"),
+  consolidatedNetMargin: document.querySelector("#consolidatedNetMargin"),
+  consolidatedGrowth: document.querySelector("#consolidatedGrowth"),
+  consolidatedGrowthText: document.querySelector("#consolidatedGrowthText"),
   consolidatedCommission: document.querySelector("#consolidatedCommission"),
-  consolidatedSales: document.querySelector("#consolidatedSales"),
+  consolidatedConsultantRevenue: document.querySelector("#consolidatedConsultantRevenue"),
   consolidatedPlatformResult: document.querySelector("#consolidatedPlatformResult"),
   /* Breakdown */
   breakdownCarGmv: document.querySelector("#breakdownCarGmv"),
-  breakdownCarGrossProfit: document.querySelector("#breakdownCarGrossProfit"),
   breakdownCarNetProfit: document.querySelector("#breakdownCarNetProfit"),
   breakdownCarCommission: document.querySelector("#breakdownCarCommission"),
-  breakdownCarConsultant: document.querySelector("#breakdownCarConsultant"),
   breakdownCarPlatform: document.querySelector("#breakdownCarPlatform"),
   breakdownBoatGmv: document.querySelector("#breakdownBoatGmv"),
-  breakdownBoatGrossProfit: document.querySelector("#breakdownBoatGrossProfit"),
   breakdownBoatNetProfit: document.querySelector("#breakdownBoatNetProfit"),
   breakdownBoatCommission: document.querySelector("#breakdownBoatCommission"),
-  breakdownBoatConsultant: document.querySelector("#breakdownBoatConsultant"),
   breakdownBoatPlatform: document.querySelector("#breakdownBoatPlatform"),
   breakdownAircraftGmv: document.querySelector("#breakdownAircraftGmv"),
-  breakdownAircraftGrossProfit: document.querySelector("#breakdownAircraftGrossProfit"),
   breakdownAircraftNetProfit: document.querySelector("#breakdownAircraftNetProfit"),
   breakdownAircraftCommission: document.querySelector("#breakdownAircraftCommission"),
-  breakdownAircraftConsultant: document.querySelector("#breakdownAircraftConsultant"),
   breakdownAircraftPlatform: document.querySelector("#breakdownAircraftPlatform"),
 };
 
@@ -438,6 +436,15 @@ function renderEmptyState() {
   elements.comparisonCurrentMargin.textContent = "margem 0%";
   elements.comparisonTotalSales.textContent = "0 vendas";
   elements.comparisonNetMargin.textContent = "margem líquida 0%";
+
+  /* Consolidated empty state */
+  if (elements.consolidatedCurrentProfit) {
+    elements.consolidatedCurrentSales.textContent = "0 vendas";
+    elements.consolidatedCurrentMargin.textContent = "margem média 0%";
+    elements.consolidatedTotalSales.textContent = "0 vendas";
+    elements.consolidatedNetMargin.textContent = "margem líquida 0%";
+    elements.consolidatedGrowthText.textContent = "de lucro adicional em 3 categorias";
+  }
 }
 
 function toggleViewMode(isConsolidated) {
@@ -450,37 +457,42 @@ function toggleViewMode(isConsolidated) {
 }
 
 function renderConsolidatedView(resultsByCategory, consolidated) {
-  elements.consolidatedGmv.textContent = formatCurrency(consolidated.incrementalGmv);
-  elements.consolidatedGrossProfit.textContent = formatCurrency(consolidated.specialistIncrementalGrossProfit);
-  elements.consolidatedNetProfit.textContent = formatSignedCurrency(consolidated.specialistIncrementalNetProfit);
-  elements.consolidatedWeightedMargin.textContent = formatPercent(consolidated.specialistMargin);
+  /* Antes/Depois consolidado */
+  elements.consolidatedCurrentProfit.textContent = formatCurrency(consolidated.specialistCurrentProfit);
+  elements.consolidatedCurrentSales.textContent = `${integerFormatter.format(consolidated.currentSales)} vendas`;
+  elements.consolidatedCurrentMargin.textContent = `margem média ${formatPercent(consolidated.specialistMargin)}`;
+
+  elements.consolidatedTotalProfit.textContent = formatCurrency(consolidated.specialistTotalProfitWithBmf);
+  elements.consolidatedTotalSales.textContent = `${integerFormatter.format(consolidated.currentSales + consolidated.bmfSales)} vendas`;
+  elements.consolidatedNetMargin.textContent = `margem líquida ${formatPercent(consolidated.specialistNetIncrementalMargin)}`;
+
+  /* Banner de crescimento */
+  elements.consolidatedGrowth.textContent = formatSignedCurrency(consolidated.specialistIncrementalNetProfit);
+  elements.consolidatedGrowthText.textContent = `de lucro adicional com ${integerFormatter.format(consolidated.bmfSales)} novas vendas em 3 categorias`;
+
+  /* Visão geral */
   elements.consolidatedCommission.textContent = formatCurrency(consolidated.commissionPaid);
-  elements.consolidatedSales.textContent = integerFormatter.format(consolidated.bmfSales);
+  elements.consolidatedConsultantRevenue.textContent = formatSignedCurrency(consolidated.consultantRevenue);
   elements.consolidatedPlatformResult.textContent = formatCurrency(consolidated.platformFinalResult);
 
+  /* Breakdown por categoria */
   const car = resultsByCategory.carro_luxo;
   const boat = resultsByCategory.barco;
   const aircraft = resultsByCategory.aeronave;
 
   elements.breakdownCarGmv.textContent = formatCurrency(car.incrementalGmv);
-  elements.breakdownCarGrossProfit.textContent = formatCurrency(car.specialistIncrementalGrossProfit);
   elements.breakdownCarNetProfit.textContent = formatSignedCurrency(car.specialistIncrementalNetProfit);
   elements.breakdownCarCommission.textContent = formatCurrency(car.commissionPaid);
-  elements.breakdownCarConsultant.textContent = formatCurrency(car.consultantRevenue);
   elements.breakdownCarPlatform.textContent = formatCurrency(car.platformRevenue);
 
   elements.breakdownBoatGmv.textContent = formatCurrency(boat.incrementalGmv);
-  elements.breakdownBoatGrossProfit.textContent = formatCurrency(boat.specialistIncrementalGrossProfit);
   elements.breakdownBoatNetProfit.textContent = formatSignedCurrency(boat.specialistIncrementalNetProfit);
   elements.breakdownBoatCommission.textContent = formatCurrency(boat.commissionPaid);
-  elements.breakdownBoatConsultant.textContent = formatCurrency(boat.consultantRevenue);
   elements.breakdownBoatPlatform.textContent = formatCurrency(boat.platformRevenue);
 
   elements.breakdownAircraftGmv.textContent = formatCurrency(aircraft.incrementalGmv);
-  elements.breakdownAircraftGrossProfit.textContent = formatCurrency(aircraft.specialistIncrementalGrossProfit);
   elements.breakdownAircraftNetProfit.textContent = formatSignedCurrency(aircraft.specialistIncrementalNetProfit);
   elements.breakdownAircraftCommission.textContent = formatCurrency(aircraft.commissionPaid);
-  elements.breakdownAircraftConsultant.textContent = formatCurrency(aircraft.consultantRevenue);
   elements.breakdownAircraftPlatform.textContent = formatCurrency(aircraft.platformRevenue);
 }
 
