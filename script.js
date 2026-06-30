@@ -70,6 +70,7 @@ const elements = {
   resetDefaults: document.querySelector("#resetDefaults"),
   validationAlert: document.querySelector("#validationAlert"),
   openParameters: document.querySelector("#openParameters"),
+  openParametersTop: document.querySelector("#openParametersTop"),
   closeParameters: document.querySelector("#closeParameters"),
   sidebarBackdrop: document.querySelector("#sidebarBackdrop"),
   categoryResult: document.querySelector("#categoryResult"),
@@ -561,6 +562,9 @@ elements.resultTabs.forEach((tab) => {
 
 elements.resetDefaults.addEventListener("click", resetDefaults);
 elements.openParameters.addEventListener("click", openSidebar);
+if (elements.openParametersTop) {
+  elements.openParametersTop.addEventListener("click", openSidebar);
+}
 elements.closeParameters.addEventListener("click", closeSidebar);
 elements.sidebarBackdrop.addEventListener("click", closeSidebar);
 

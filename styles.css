@@ -886,6 +886,14 @@ h3 {
 }
 
 /* ============================================================
+   Mobile top bar (aparece só no mobile)
+   ============================================================ */
+
+.mobile-top-bar {
+  display: none;
+}
+
+/* ============================================================
    Responsivo — tablet
    ============================================================ */
 
@@ -913,22 +921,65 @@ h3 {
    ============================================================ */
 
 @media (max-width: 760px) {
+  /* ---- Top bar ---- */
+  .mobile-top-bar {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 45;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    padding: 0 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 1px 4px rgba(24, 39, 35, 0.06);
+  }
+
+  .mobile-top-bar-title {
+    color: var(--text);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .mobile-top-bar-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 14px;
+    color: var(--platform);
+    background: rgba(14, 124, 102, 0.08);
+    border: 1px solid rgba(14, 124, 102, 0.25);
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.8rem;
+  }
+
+  .mobile-top-bar-action svg {
+    flex-shrink: 0;
+  }
+
+  /* ---- FAB (ícone de lápis) ---- */
   .mobile-parameters-button {
     display: inline-flex;
     position: fixed;
     right: 16px;
     bottom: 20px;
     z-index: 40;
-    min-height: 46px;
-    padding: 0 20px;
+    width: 48px;
+    height: 48px;
     align-items: center;
+    justify-content: center;
     color: #ffffff;
     background: var(--platform);
     border: 0;
-    border-radius: 999px;
-    box-shadow: 0 12px 30px rgba(14, 124, 102, 0.28);
-    font-weight: 700;
-    font-size: 0.88rem;
+    border-radius: 50%;
+    box-shadow: 0 8px 24px rgba(14, 124, 102, 0.32);
+  }
+
+  .mobile-parameters-button svg {
+    flex-shrink: 0;
   }
 
   .close-sidebar {
@@ -978,7 +1029,7 @@ h3 {
   }
 
   .results-panel {
-    padding: 16px;
+    padding: 14px;
   }
 
   .result-tabs {
@@ -992,21 +1043,38 @@ h3 {
     font-size: 0.82rem;
   }
 
-  .premise-card,
-  .specialist-hero,
-  .insight-grid,
-  .consultant-panel,
-  .consultant-metrics,
-  .distribution-grid {
-    grid-template-columns: 1fr;
+  /* ---- Horizontalização: 2 colunas ---- */
+  .premise-card {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .insight-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .consultant-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .operation-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .consolidated-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* ---- Mantém 1 coluna onde 2 não caberiam ---- */
+  .specialist-hero,
+  .consultant-panel,
+  .distribution-grid,
+  .breakdown-grid {
     grid-template-columns: 1fr;
   }
 
+  /* ---- Redução de espaçamento ---- */
   .specialist-hero {
-    padding: 18px;
+    padding: 16px;
   }
 
   .hero-side {
@@ -1021,16 +1089,61 @@ h3 {
     font-size: clamp(1.2rem, 5vw, 1.6rem);
   }
 
-  .consolidated-summary-grid,
-  .breakdown-grid {
-    grid-template-columns: 1fr;
-  }
-
   .consolidated-summary {
-    padding: 16px;
+    padding: 14px;
   }
 
   .breakdown-card {
     padding: 12px 14px;
+  }
+
+  .insight-card,
+  .distribution-grid article {
+    min-height: auto;
+    padding: 14px;
+  }
+
+  .consultant-panel,
+  .distribution-panel {
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+
+  .consultant-metrics div {
+    min-height: auto;
+  }
+
+  .operation-grid div {
+    min-height: auto;
+    padding: 10px 12px;
+  }
+
+  .operation-result {
+    margin: 10px 10px 14px;
+    padding: 14px;
+  }
+
+  .specialist-hero,
+  .insight-grid,
+  .consolidated-summary,
+  .breakdown-section {
+    margin-bottom: 14px;
+  }
+
+  .premise-card {
+    margin-bottom: 14px;
+  }
+
+  .premise-card div {
+    min-height: auto;
+    padding: 10px 12px;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+  }
+
+  h3 {
+    font-size: 0.95rem;
   }
 }
