@@ -586,6 +586,17 @@ h3 {
   line-height: 1.4;
 }
 
+.margin-alert {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  color: #7a5a14;
+  background: #fff7df;
+  border: 1px solid rgba(122, 90, 20, 0.22);
+  border-radius: 8px;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
 /* ============================================================
    Painel do consultor
    ============================================================ */

@@ -68,6 +68,14 @@
           </div>
 
           <div class="field">
+            <label for="specialistMargin">Margem atual do especialista</label>
+            <div class="input-suffix">
+              <input id="specialistMargin" name="specialistMargin" type="text" inputmode="decimal" value="12">
+              <span>%</span>
+            </div>
+          </div>
+
+          <div class="field">
             <label for="totalCommission">Comissão total</label>
             <div class="input-suffix">
               <input id="totalCommission" name="totalCommission" type="text" inputmode="decimal" value="5">
@@ -179,13 +187,14 @@
           <section class="specialist-hero" aria-labelledby="specialist-title">
             <div>
               <p class="section-kicker">Para o especialista vendedor</p>
-              <h3 id="specialist-title">Venda incremental líquida</h3>
-              <strong id="specialistNetIncremental">R$ 0</strong>
-              <span id="specialistHeroText">Receita nova depois da comissão BMF.</span>
+              <h3 id="specialist-title">Lucro incremental líquido com BMF</h3>
+              <strong id="specialistIncrementalNetProfit">R$ 0</strong>
+              <span id="specialistHeroText">Lucro adicional após aplicar sua margem atual e descontar a comissão BMF.</span>
+              <p class="margin-alert" id="specialistMarginAlert" hidden>A comissão supera a margem atual nesta simulação. Revise a comissão, margem ou volume incremental.</p>
             </div>
             <div class="hero-side">
-              <span>Receita total estimada com BMF</span>
-              <strong id="specialistTotalWithBmf">R$ 0</strong>
+              <span>Lucro total estimado com BMF</span>
+              <strong id="specialistTotalProfitWithBmf">R$ 0</strong>
             </div>
           </section>
 
@@ -196,9 +205,19 @@
               <p id="commissionTradeoffText">Comissão para abrir venda incremental.</p>
             </article>
             <article class="insight-card">
-              <span>Eficiência comercial</span>
+              <span>GMV incremental via BMF</span>
               <strong id="efficiencyRatio">0x</strong>
-              <p id="efficiencyRatioText">Venda incremental gerada para cada R$ 1 de comissão.</p>
+              <p id="efficiencyRatioText">Venda incremental antes de margem e comissão.</p>
+            </article>
+            <article class="insight-card">
+              <span>Margem atual</span>
+              <strong id="marginBefore">0%</strong>
+              <p>Margem bruta do especialista antes da BMF.</p>
+            </article>
+            <article class="insight-card">
+              <span>Margem líquida após BMF</span>
+              <strong id="marginAfter">0%</strong>
+              <p>Sua margem incremental após descontar a comissão BMF.</p>
             </article>
           </div>
         </div>
@@ -213,6 +232,18 @@
               <div>
                 <span>GMV incremental total</span>
                 <strong id="consolidatedGmv">R$ 0</strong>
+              </div>
+              <div>
+                <span>Lucro incremental bruto</span>
+                <strong id="consolidatedGrossProfit">R$ 0</strong>
+              </div>
+              <div>
+                <span>Lucro incremental líquido</span>
+                <strong id="consolidatedNetProfit">R$ 0</strong>
+              </div>
+              <div>
+                <span>Margem média ponderada</span>
+                <strong id="consolidatedWeightedMargin">0%</strong>
               </div>
               <div>
                 <span>Comissão total paga</span>
@@ -236,6 +267,8 @@
                 <h4>Carro de luxo</h4>
                 <div class="breakdown-rows">
                   <div><span>GMV incremental</span><strong id="breakdownCarGmv">R$ 0</strong></div>
+                  <div><span>Lucro bruto</span><strong id="breakdownCarGrossProfit">R$ 0</strong></div>
+                  <div><span>Lucro líquido</span><strong id="breakdownCarNetProfit">R$ 0</strong></div>
                   <div><span>Comissão paga</span><strong id="breakdownCarCommission">R$ 0</strong></div>
                   <div><span>Receita do consultor</span><strong id="breakdownCarConsultant">R$ 0</strong></div>
                   <div><span>Receita da plataforma</span><strong id="breakdownCarPlatform">R$ 0</strong></div>
@@ -245,6 +278,8 @@
                 <h4>Barco</h4>
                 <div class="breakdown-rows">
                   <div><span>GMV incremental</span><strong id="breakdownBoatGmv">R$ 0</strong></div>
+                  <div><span>Lucro bruto</span><strong id="breakdownBoatGrossProfit">R$ 0</strong></div>
+                  <div><span>Lucro líquido</span><strong id="breakdownBoatNetProfit">R$ 0</strong></div>
                   <div><span>Comissão paga</span><strong id="breakdownBoatCommission">R$ 0</strong></div>
                   <div><span>Receita do consultor</span><strong id="breakdownBoatConsultant">R$ 0</strong></div>
                   <div><span>Receita da plataforma</span><strong id="breakdownBoatPlatform">R$ 0</strong></div>
@@ -254,6 +289,8 @@
                 <h4>Aeronave</h4>
                 <div class="breakdown-rows">
                   <div><span>GMV incremental</span><strong id="breakdownAircraftGmv">R$ 0</strong></div>
+                  <div><span>Lucro bruto</span><strong id="breakdownAircraftGrossProfit">R$ 0</strong></div>
+                  <div><span>Lucro líquido</span><strong id="breakdownAircraftNetProfit">R$ 0</strong></div>
                   <div><span>Comissão paga</span><strong id="breakdownAircraftCommission">R$ 0</strong></div>
                   <div><span>Receita do consultor</span><strong id="breakdownAircraftConsultant">R$ 0</strong></div>
                   <div><span>Receita da plataforma</span><strong id="breakdownAircraftPlatform">R$ 0</strong></div>
@@ -323,8 +360,24 @@
                   <strong id="currentRevenue">R$ 0</strong>
                 </div>
                 <div>
+                  <span>Lucro atual do especialista</span>
+                  <strong id="specialistCurrentProfit">R$ 0</strong>
+                </div>
+                <div>
                   <span>GMV incremental via BMF</span>
                   <strong id="incrementalGmv">R$ 0</strong>
+                </div>
+                <div>
+                  <span>Lucro incremental bruto</span>
+                  <strong id="specialistIncrementalGrossProfit">R$ 0</strong>
+                </div>
+                <div>
+                  <span>Comissão BMF</span>
+                  <strong id="commissionPaidDetail">R$ 0</strong>
+                </div>
+                <div>
+                  <span>Lucro incremental líquido</span>
+                  <strong id="specialistIncrementalNetProfitDetail">R$ 0</strong>
                 </div>
               </div>
             </div>

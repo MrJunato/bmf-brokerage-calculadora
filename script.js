@@ -5,6 +5,7 @@ const CATEGORIES = {
     averageTicket: 1000000,
     currentSales: 10,
     bmfSales: 2,
+    specialistMargin: 12,
     commission: 5,
   },
   barco: {
@@ -13,6 +14,7 @@ const CATEGORIES = {
     averageTicket: 2000000,
     currentSales: 5,
     bmfSales: 1,
+    specialistMargin: 15,
     commission: 3,
   },
   aeronave: {
@@ -21,6 +23,7 @@ const CATEGORIES = {
     averageTicket: 10000000,
     currentSales: 1,
     bmfSales: 1,
+    specialistMargin: 4,
     commission: 1,
   },
 };
@@ -61,6 +64,7 @@ const elements = {
   averageTicket: document.querySelector("#averageTicket"),
   currentSales: document.querySelector("#currentSales"),
   bmfSales: document.querySelector("#bmfSales"),
+  specialistMargin: document.querySelector("#specialistMargin"),
   totalCommission: document.querySelector("#totalCommission"),
   platformSplit: document.querySelector("#platformSplit"),
   consultantSplit: document.querySelector("#consultantSplit"),
@@ -77,21 +81,28 @@ const elements = {
   averageTicketResult: document.querySelector("#averageTicketResult"),
   currentSalesResult: document.querySelector("#currentSalesResult"),
   bmfSalesResult: document.querySelector("#bmfSalesResult"),
-  specialistNetIncremental: document.querySelector("#specialistNetIncremental"),
+  specialistIncrementalNetProfit: document.querySelector("#specialistIncrementalNetProfit"),
+  specialistMarginAlert: document.querySelector("#specialistMarginAlert"),
   specialistHeroText: document.querySelector("#specialistHeroText"),
-  specialistTotalWithBmf: document.querySelector("#specialistTotalWithBmf"),
+  specialistTotalProfitWithBmf: document.querySelector("#specialistTotalProfitWithBmf"),
   commissionTradeoff: document.querySelector("#commissionTradeoff"),
   commissionTradeoffText: document.querySelector("#commissionTradeoffText"),
   efficiencyRatio: document.querySelector("#efficiencyRatio"),
   efficiencyRatioText: document.querySelector("#efficiencyRatioText"),
+  marginBefore: document.querySelector("#marginBefore"),
+  marginAfter: document.querySelector("#marginAfter"),
   consultantRevenue: document.querySelector("#consultantRevenue"),
   consultantOpportunities: document.querySelector("#consultantOpportunities"),
   consultantTakeRate: document.querySelector("#consultantTakeRate"),
   commissionPaid: document.querySelector("#commissionPaid"),
+  commissionPaidDetail: document.querySelector("#commissionPaidDetail"),
   consultantRevenueDistribution: document.querySelector("#consultantRevenueDistribution"),
   platformRevenue: document.querySelector("#platformRevenue"),
   currentRevenue: document.querySelector("#currentRevenue"),
+  specialistCurrentProfit: document.querySelector("#specialistCurrentProfit"),
   incrementalGmv: document.querySelector("#incrementalGmv"),
+  specialistIncrementalGrossProfit: document.querySelector("#specialistIncrementalGrossProfit"),
+  specialistIncrementalNetProfitDetail: document.querySelector("#specialistIncrementalNetProfitDetail"),
   totalCommissionRate: document.querySelector("#totalCommissionRate"),
   platformTakeRate: document.querySelector("#platformTakeRate"),
   taxValue: document.querySelector("#taxValue"),
@@ -101,19 +112,28 @@ const elements = {
   specialistViews: document.querySelectorAll(".specialist-view"),
   consolidatedViews: document.querySelectorAll(".consolidated-view"),
   consolidatedGmv: document.querySelector("#consolidatedGmv"),
+  consolidatedGrossProfit: document.querySelector("#consolidatedGrossProfit"),
+  consolidatedNetProfit: document.querySelector("#consolidatedNetProfit"),
+  consolidatedWeightedMargin: document.querySelector("#consolidatedWeightedMargin"),
   consolidatedCommission: document.querySelector("#consolidatedCommission"),
   consolidatedSales: document.querySelector("#consolidatedSales"),
   consolidatedPlatformResult: document.querySelector("#consolidatedPlatformResult"),
   /* Breakdown */
   breakdownCarGmv: document.querySelector("#breakdownCarGmv"),
+  breakdownCarGrossProfit: document.querySelector("#breakdownCarGrossProfit"),
+  breakdownCarNetProfit: document.querySelector("#breakdownCarNetProfit"),
   breakdownCarCommission: document.querySelector("#breakdownCarCommission"),
   breakdownCarConsultant: document.querySelector("#breakdownCarConsultant"),
   breakdownCarPlatform: document.querySelector("#breakdownCarPlatform"),
   breakdownBoatGmv: document.querySelector("#breakdownBoatGmv"),
+  breakdownBoatGrossProfit: document.querySelector("#breakdownBoatGrossProfit"),
+  breakdownBoatNetProfit: document.querySelector("#breakdownBoatNetProfit"),
   breakdownBoatCommission: document.querySelector("#breakdownBoatCommission"),
   breakdownBoatConsultant: document.querySelector("#breakdownBoatConsultant"),
   breakdownBoatPlatform: document.querySelector("#breakdownBoatPlatform"),
   breakdownAircraftGmv: document.querySelector("#breakdownAircraftGmv"),
+  breakdownAircraftGrossProfit: document.querySelector("#breakdownAircraftGrossProfit"),
+  breakdownAircraftNetProfit: document.querySelector("#breakdownAircraftNetProfit"),
   breakdownAircraftCommission: document.querySelector("#breakdownAircraftCommission"),
   breakdownAircraftConsultant: document.querySelector("#breakdownAircraftConsultant"),
   breakdownAircraftPlatform: document.querySelector("#breakdownAircraftPlatform"),
@@ -127,6 +147,7 @@ function createDefaultState() {
         averageTicket: category.averageTicket,
         currentSales: category.currentSales,
         bmfSales: category.bmfSales,
+        specialistMargin: category.specialistMargin,
         totalCommission: category.commission,
         platformSplit: DEFAULT_PLATFORM_SPLIT,
         consultantSplit: DEFAULT_CONSULTANT_SPLIT,
@@ -203,6 +224,7 @@ function readFormIntoActiveCategory() {
     averageTicket: parseFormattedNumber(elements.averageTicket.value),
     currentSales: Math.floor(parseFormattedNumber(elements.currentSales.value)),
     bmfSales: Math.floor(parseFormattedNumber(elements.bmfSales.value)),
+    specialistMargin: parseDecimalNumber(elements.specialistMargin.value),
     totalCommission: parseDecimalNumber(elements.totalCommission.value),
     platformSplit: parseDecimalNumber(elements.platformSplit.value),
     consultantSplit: parseDecimalNumber(elements.consultantSplit.value),
@@ -218,6 +240,7 @@ function loadCategoryIntoForm(categoryKey) {
   elements.averageTicket.value = integerFormatter.format(state.averageTicket);
   elements.currentSales.value = state.currentSales;
   elements.bmfSales.value = state.bmfSales;
+  setPercentInput(elements.specialistMargin, state.specialistMargin);
   setPercentInput(elements.totalCommission, state.totalCommission);
   setPercentInput(elements.platformSplit, state.platformSplit);
   setPercentInput(elements.consultantSplit, state.consultantSplit);
@@ -242,6 +265,7 @@ function validateCategoryState(state) {
 
     if (
       values.totalCommission < 0 ||
+      values.specialistMargin < 0 ||
       values.platformSplit < 0 ||
       values.consultantSplit < 0 ||
       values.taxRate < 0
@@ -263,10 +287,12 @@ function validateCategoryState(state) {
 
 function calculateCategory(values) {
   const currentRevenue = values.averageTicket * values.currentSales;
+  const specialistCurrentProfit = currentRevenue * (values.specialistMargin / 100);
   const incrementalGmv = values.averageTicket * values.bmfSales;
+  const specialistIncrementalGrossProfit = incrementalGmv * (values.specialistMargin / 100);
   const commissionPaid = incrementalGmv * (values.totalCommission / 100);
-  const specialistNetIncremental = incrementalGmv - commissionPaid;
-  const specialistTotalWithBmf = currentRevenue + specialistNetIncremental;
+  const specialistIncrementalNetProfit = specialistIncrementalGrossProfit - commissionPaid;
+  const specialistTotalProfitWithBmf = specialistCurrentProfit + specialistIncrementalNetProfit;
   const platformRevenue = commissionPaid * (values.platformSplit / 100);
   const consultantRevenue = commissionPaid * (values.consultantSplit / 100);
   const taxValue = platformRevenue * (values.taxRate / 100);
@@ -275,14 +301,17 @@ function calculateCategory(values) {
   const platformTakeRate = incrementalGmv > 0 ? (platformRevenue / incrementalGmv) * 100 : 0;
   const consultantTakeRate = incrementalGmv > 0 ? (consultantRevenue / incrementalGmv) * 100 : 0;
   const efficiencyRatio = commissionPaid > 0 ? incrementalGmv / commissionPaid : 0;
+  const specialistNetIncrementalMargin = values.specialistMargin - values.totalCommission;
 
   return {
     ...values,
     currentRevenue,
+    specialistCurrentProfit,
     incrementalGmv,
+    specialistIncrementalGrossProfit,
     commissionPaid,
-    specialistNetIncremental,
-    specialistTotalWithBmf,
+    specialistIncrementalNetProfit,
+    specialistTotalProfitWithBmf,
     platformRevenue,
     consultantRevenue,
     taxValue,
@@ -292,6 +321,7 @@ function calculateCategory(values) {
     platformTakeRate,
     consultantTakeRate,
     efficiencyRatio,
+    specialistNetIncrementalMargin,
   };
 }
 
@@ -312,16 +342,20 @@ function calculateConsolidated(resultsByCategory) {
     currentSales,
     bmfSales,
     currentRevenue: sum("currentRevenue"),
+    specialistCurrentProfit: sum("specialistCurrentProfit"),
     incrementalGmv,
+    specialistIncrementalGrossProfit: sum("specialistIncrementalGrossProfit"),
     commissionPaid,
-    specialistNetIncremental: sum("specialistNetIncremental"),
-    specialistTotalWithBmf: sum("specialistTotalWithBmf"),
+    specialistIncrementalNetProfit: sum("specialistIncrementalNetProfit"),
+    specialistTotalProfitWithBmf: sum("specialistTotalProfitWithBmf"),
     platformRevenue,
     consultantRevenue,
     taxValue,
     totalCosts,
     platformFinalResult: platformRevenue - taxValue - totalCosts,
     totalCommissionRate: incrementalGmv > 0 ? (commissionPaid / incrementalGmv) * 100 : 0,
+    specialistMargin: incrementalGmv > 0 ? (sum("specialistIncrementalGrossProfit") / incrementalGmv) * 100 : 0,
+    specialistNetIncrementalMargin: incrementalGmv > 0 ? (sum("specialistIncrementalNetProfit") / incrementalGmv) * 100 : 0,
     platformTakeRate: incrementalGmv > 0 ? (platformRevenue / incrementalGmv) * 100 : 0,
     consultantTakeRate: incrementalGmv > 0 ? (consultantRevenue / incrementalGmv) * 100 : 0,
     taxRate: platformRevenue > 0 ? (taxValue / platformRevenue) * 100 : 0,
@@ -347,21 +381,27 @@ function renderEmptyState() {
     elements.averageTicketResult,
     elements.currentSalesResult,
     elements.bmfSalesResult,
-    elements.specialistNetIncremental,
+    elements.specialistIncrementalNetProfit,
     elements.specialistHeroText,
-    elements.specialistTotalWithBmf,
+    elements.specialistTotalProfitWithBmf,
     elements.commissionTradeoff,
     elements.commissionTradeoffText,
     elements.efficiencyRatio,
     elements.efficiencyRatioText,
+    elements.marginBefore,
+    elements.marginAfter,
     elements.consultantRevenue,
     elements.consultantOpportunities,
     elements.consultantTakeRate,
     elements.commissionPaid,
+    elements.commissionPaidDetail,
     elements.consultantRevenueDistribution,
     elements.platformRevenue,
     elements.currentRevenue,
+    elements.specialistCurrentProfit,
     elements.incrementalGmv,
+    elements.specialistIncrementalGrossProfit,
+    elements.specialistIncrementalNetProfitDetail,
     elements.totalCommissionRate,
     elements.platformTakeRate,
     elements.taxValue,
@@ -370,6 +410,8 @@ function renderEmptyState() {
   ].forEach((element) => {
     element.textContent = "Não calculado";
   });
+
+  elements.specialistMarginAlert.hidden = true;
 }
 
 function toggleViewMode(isConsolidated) {
@@ -383,6 +425,9 @@ function toggleViewMode(isConsolidated) {
 
 function renderConsolidatedView(resultsByCategory, consolidated) {
   elements.consolidatedGmv.textContent = formatCurrency(consolidated.incrementalGmv);
+  elements.consolidatedGrossProfit.textContent = formatCurrency(consolidated.specialistIncrementalGrossProfit);
+  elements.consolidatedNetProfit.textContent = formatCurrency(consolidated.specialistIncrementalNetProfit);
+  elements.consolidatedWeightedMargin.textContent = formatPercent(consolidated.specialistMargin);
   elements.consolidatedCommission.textContent = formatCurrency(consolidated.commissionPaid);
   elements.consolidatedSales.textContent = integerFormatter.format(consolidated.bmfSales);
   elements.consolidatedPlatformResult.textContent = formatCurrency(consolidated.platformFinalResult);
@@ -392,16 +437,22 @@ function renderConsolidatedView(resultsByCategory, consolidated) {
   const aircraft = resultsByCategory.aeronave;
 
   elements.breakdownCarGmv.textContent = formatCurrency(car.incrementalGmv);
+  elements.breakdownCarGrossProfit.textContent = formatCurrency(car.specialistIncrementalGrossProfit);
+  elements.breakdownCarNetProfit.textContent = formatCurrency(car.specialistIncrementalNetProfit);
   elements.breakdownCarCommission.textContent = formatCurrency(car.commissionPaid);
   elements.breakdownCarConsultant.textContent = formatCurrency(car.consultantRevenue);
   elements.breakdownCarPlatform.textContent = formatCurrency(car.platformRevenue);
 
   elements.breakdownBoatGmv.textContent = formatCurrency(boat.incrementalGmv);
+  elements.breakdownBoatGrossProfit.textContent = formatCurrency(boat.specialistIncrementalGrossProfit);
+  elements.breakdownBoatNetProfit.textContent = formatCurrency(boat.specialistIncrementalNetProfit);
   elements.breakdownBoatCommission.textContent = formatCurrency(boat.commissionPaid);
   elements.breakdownBoatConsultant.textContent = formatCurrency(boat.consultantRevenue);
   elements.breakdownBoatPlatform.textContent = formatCurrency(boat.platformRevenue);
 
   elements.breakdownAircraftGmv.textContent = formatCurrency(aircraft.incrementalGmv);
+  elements.breakdownAircraftGrossProfit.textContent = formatCurrency(aircraft.specialistIncrementalGrossProfit);
+  elements.breakdownAircraftNetProfit.textContent = formatCurrency(aircraft.specialistIncrementalNetProfit);
   elements.breakdownAircraftCommission.textContent = formatCurrency(aircraft.commissionPaid);
   elements.breakdownAircraftConsultant.textContent = formatCurrency(aircraft.consultantRevenue);
   elements.breakdownAircraftPlatform.textContent = formatCurrency(aircraft.platformRevenue);
@@ -426,21 +477,28 @@ function renderResults(result, label) {
   elements.averageTicketResult.textContent = formatCurrency(result.averageTicket);
   elements.currentSalesResult.textContent = integerFormatter.format(result.currentSales);
   elements.bmfSalesResult.textContent = integerFormatter.format(result.bmfSales);
-  elements.specialistNetIncremental.textContent = formatCurrency(result.specialistNetIncremental);
-  elements.specialistHeroText.textContent = `Receita adicional líquida após pagar ${formatPercent(result.totalCommissionRate)} de comissão sobre ${formatCurrency(result.incrementalGmv)} em novas vendas.`;
-  elements.specialistTotalWithBmf.textContent = formatCurrency(result.specialistTotalWithBmf);
+  elements.specialistIncrementalNetProfit.textContent = formatCurrency(result.specialistIncrementalNetProfit);
+  elements.specialistMarginAlert.hidden = result.specialistNetIncrementalMargin >= 0;
+  elements.specialistHeroText.textContent = `Lucro adicional após aplicar ${formatPercent(result.specialistMargin)} de margem atual e descontar ${formatPercent(result.totalCommissionRate)} de comissão BMF.`;
+  elements.specialistTotalProfitWithBmf.textContent = formatCurrency(result.specialistTotalProfitWithBmf);
   elements.commissionTradeoff.textContent = formatCurrency(result.commissionPaid);
   elements.commissionTradeoffText.textContent = `${formatPercent(result.totalCommissionRate)} sobre ${formatCurrency(result.incrementalGmv)} — investimento para ${integerFormatter.format(result.bmfSales)} nova(s) venda(s).`;
-  elements.efficiencyRatio.textContent = formatRatio(result.efficiencyRatio);
-  elements.efficiencyRatioText.textContent = `A cada R$ 1 de comissão, o especialista gera ${formatCurrency(result.efficiencyRatio)} em vendas incrementais.`;
+  elements.efficiencyRatio.textContent = formatCurrency(result.incrementalGmv);
+  elements.efficiencyRatioText.textContent = "GMV incremental via BMF antes de margem e comissão.";
+  elements.marginBefore.textContent = formatPercent(result.specialistMargin);
+  elements.marginAfter.textContent = formatPercent(result.specialistNetIncrementalMargin);
   elements.consultantRevenue.textContent = formatCurrency(result.consultantRevenue);
   elements.consultantOpportunities.textContent = integerFormatter.format(result.bmfSales);
   elements.consultantTakeRate.textContent = formatPercent(result.consultantTakeRate);
   elements.commissionPaid.textContent = formatCurrency(result.commissionPaid);
+  elements.commissionPaidDetail.textContent = formatCurrency(result.commissionPaid);
   elements.consultantRevenueDistribution.textContent = formatCurrency(result.consultantRevenue);
   elements.platformRevenue.textContent = formatCurrency(result.platformRevenue);
   elements.currentRevenue.textContent = formatCurrency(result.currentRevenue);
+  elements.specialistCurrentProfit.textContent = formatCurrency(result.specialistCurrentProfit);
   elements.incrementalGmv.textContent = formatCurrency(result.incrementalGmv);
+  elements.specialistIncrementalGrossProfit.textContent = formatCurrency(result.specialistIncrementalGrossProfit);
+  elements.specialistIncrementalNetProfitDetail.textContent = formatCurrency(result.specialistIncrementalNetProfit);
   elements.totalCommissionRate.textContent = formatPercent(result.totalCommissionRate);
   elements.platformTakeRate.textContent = formatPercent(result.platformTakeRate);
   elements.taxValue.textContent = formatCurrency(result.taxValue);
