@@ -784,7 +784,16 @@ elements.editTabs.forEach((tab) => {
 
 elements.resultTabs.forEach((tab) => {
   tab.addEventListener("click", () => {
-    activeResultCategory = tab.dataset.resultCategory;
+    updateCalculator();
+
+    const resultCategory = tab.dataset.resultCategory;
+    activeResultCategory = resultCategory;
+
+    if (resultCategory !== "consolidado") {
+      activeEditCategory = resultCategory;
+      loadCategoryIntoForm(activeEditCategory);
+    }
+
     updateCalculator();
   });
 });
