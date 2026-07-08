@@ -74,14 +74,23 @@ const elements = {
   averageTicketResult: document.querySelector("#averageTicketResult"),
   currentSalesResult: document.querySelector("#currentSalesResult"),
   bmfSalesResult: document.querySelector("#bmfSalesResult"),
+  premiseCurrentGmv: document.querySelector("#premiseCurrentGmv"),
+  premiseIncrementalGmv: document.querySelector("#premiseIncrementalGmv"),
   comparisonCurrentCommission: document.querySelector("#comparisonCurrentCommission"),
   comparisonCurrentSales: document.querySelector("#comparisonCurrentSales"),
   comparisonCurrentRate: document.querySelector("#comparisonCurrentRate"),
+  comparisonCurrentGmvValue: document.querySelector("#comparisonCurrentGmvValue"),
   comparisonTotalCommission: document.querySelector("#comparisonTotalCommission"),
   comparisonTotalSales: document.querySelector("#comparisonTotalSales"),
   comparisonNetRetention: document.querySelector("#comparisonNetRetention"),
+  comparisonTotalGmvValue: document.querySelector("#comparisonTotalGmvValue"),
   growthAmount: document.querySelector("#growthAmount"),
   growthText: document.querySelector("#growthText"),
+  growthGmvContext: document.querySelector("#growthGmvContext"),
+  gmvHighlightCurrent: document.querySelector("#gmvHighlightCurrent"),
+  gmvHighlightTotal: document.querySelector("#gmvHighlightTotal"),
+  gmvHighlightConsolidatedCurrent: document.querySelector("#gmvHighlightConsolidatedCurrent"),
+  gmvHighlightConsolidatedTotal: document.querySelector("#gmvHighlightConsolidatedTotal"),
   specialistGrossCommission: document.querySelector("#specialistGrossCommission"),
   specialistGrossCommissionText: document.querySelector("#specialistGrossCommissionText"),
   bmfPassThroughCard: document.querySelector("#bmfPassThroughCard"),
@@ -97,6 +106,11 @@ const elements = {
   bmfPassThroughDetail: document.querySelector("#bmfPassThroughDetail"),
   consultantRevenueDistribution: document.querySelector("#consultantRevenueDistribution"),
   platformRevenue: document.querySelector("#platformRevenue"),
+  flowIncrementalGmv: document.querySelector("#flowIncrementalGmv"),
+  flowGrossCommission: document.querySelector("#flowGrossCommission"),
+  flowBmfPassThrough: document.querySelector("#flowBmfPassThrough"),
+  flowPlatform: document.querySelector("#flowPlatform"),
+  flowConsultant: document.querySelector("#flowConsultant"),
   currentGmv: document.querySelector("#currentGmv"),
   specialistCurrentCommission: document.querySelector("#specialistCurrentCommission"),
   incrementalGmv: document.querySelector("#incrementalGmv"),
@@ -112,11 +126,14 @@ const elements = {
   consolidatedCurrentCommission: document.querySelector("#consolidatedCurrentCommission"),
   consolidatedCurrentSales: document.querySelector("#consolidatedCurrentSales"),
   consolidatedCurrentRate: document.querySelector("#consolidatedCurrentRate"),
+  consolidatedCurrentGmvValue: document.querySelector("#consolidatedCurrentGmvValue"),
   consolidatedTotalCommission: document.querySelector("#consolidatedTotalCommission"),
   consolidatedTotalSales: document.querySelector("#consolidatedTotalSales"),
   consolidatedNetRetention: document.querySelector("#consolidatedNetRetention"),
+  consolidatedTotalGmvValue: document.querySelector("#consolidatedTotalGmvValue"),
   consolidatedGrowth: document.querySelector("#consolidatedGrowth"),
   consolidatedGrowthText: document.querySelector("#consolidatedGrowthText"),
+  consolidatedGrowthGmvContext: document.querySelector("#consolidatedGrowthGmvContext"),
   consolidatedBmfPassThrough: document.querySelector("#consolidatedBmfPassThrough"),
   consolidatedConsultantRevenue: document.querySelector("#consolidatedConsultantRevenue"),
   consolidatedPlatformResult: document.querySelector("#consolidatedPlatformResult"),
@@ -417,9 +434,14 @@ function renderEmptyState() {
     elements.averageTicketResult,
     elements.currentSalesResult,
     elements.bmfSalesResult,
+    elements.premiseCurrentGmv,
+    elements.premiseIncrementalGmv,
     elements.comparisonCurrentCommission,
     elements.comparisonTotalCommission,
+    elements.comparisonCurrentGmvValue,
+    elements.comparisonTotalGmvValue,
     elements.growthAmount,
+    elements.growthGmvContext,
     elements.specialistGrossCommission,
     elements.bmfPassThroughCard,
     elements.specialistNetCommissionCard,
@@ -441,19 +463,30 @@ function renderEmptyState() {
     elements.taxValue,
     elements.totalCosts,
     elements.platformFinalResult,
+    elements.gmvHighlightCurrent,
+    elements.gmvHighlightTotal,
+    elements.gmvHighlightConsolidatedCurrent,
+    elements.gmvHighlightConsolidatedTotal,
+    elements.flowIncrementalGmv,
+    elements.flowGrossCommission,
+    elements.flowBmfPassThrough,
+    elements.flowPlatform,
+    elements.flowConsultant,
   ].forEach((element) => {
-    element.textContent = "Não calculado";
+    if (element) {
+      element.textContent = "Não calculado";
+    }
   });
 
   elements.specialistGrossCommissionText.textContent = "Sobre as vendas originadas pela BMF.";
   elements.bmfPassThroughText.textContent = "Percentual da comissão bruta repassado para a BMF.";
   elements.specialistNetCommissionText.textContent = "Comissão incremental depois do repasse BMF.";
   elements.commissionTakeRateText.textContent = "Take rate aplicado sobre a comissão do especialista.";
-  elements.growthText.textContent = "de receita líquida adicional por mês";
-  elements.comparisonCurrentSales.textContent = "0 vendas";
-  elements.comparisonCurrentRate.textContent = "comissão 0%";
-  elements.comparisonTotalSales.textContent = "0 vendas";
-  elements.comparisonNetRetention.textContent = "retenção líquida 0%";
+    elements.growthGmvContext.textContent = "R$ 0";
+    elements.comparisonCurrentSales.textContent = "0 vendas";
+    elements.comparisonCurrentRate.textContent = "comissão 0%";
+    elements.comparisonTotalSales.textContent = "0 vendas";
+    elements.comparisonNetRetention.textContent = "retenção líquida 0%";
 
   if (elements.consolidatedCurrentCommission) {
     elements.consolidatedCurrentSales.textContent = "0 vendas";
@@ -461,6 +494,9 @@ function renderEmptyState() {
     elements.consolidatedTotalSales.textContent = "0 vendas";
     elements.consolidatedNetRetention.textContent = "retenção líquida 0%";
     elements.consolidatedGrowthText.textContent = "de receita líquida adicional em 3 categorias";
+    elements.consolidatedCurrentGmvValue.textContent = "R$ 0";
+    elements.consolidatedTotalGmvValue.textContent = "R$ 0";
+    elements.consolidatedGrowthGmvContext.textContent = "R$ 0";
   }
 }
 
@@ -471,9 +507,27 @@ function toggleViewMode(isConsolidated) {
   elements.consolidatedViews.forEach((el) => {
     el.hidden = !isConsolidated;
   });
+
+  // Toggle GMV highlight bars
+  const gmvHighlight = document.querySelector("#gmvHighlight");
+  const gmvHighlightConsolidated = document.querySelector("#gmvHighlightConsolidated");
+  if (gmvHighlight) {
+    gmvHighlight.hidden = isConsolidated;
+  }
+  if (gmvHighlightConsolidated) {
+    gmvHighlightConsolidated.hidden = !isConsolidated;
+  }
 }
 
 function renderConsolidatedView(resultsByCategory, consolidated) {
+  // GMV highlight bar - consolidated
+  elements.gmvHighlightConsolidatedCurrent.textContent = formatCurrency(
+    consolidated.currentGmv,
+  );
+  elements.gmvHighlightConsolidatedTotal.textContent = formatCurrency(
+    consolidated.currentGmv + consolidated.incrementalGmv,
+  );
+
   elements.consolidatedCurrentCommission.textContent = formatCurrency(
     consolidated.specialistCurrentCommission,
   );
@@ -483,6 +537,7 @@ function renderConsolidatedView(resultsByCategory, consolidated) {
   elements.consolidatedCurrentRate.textContent = `comissão média ${formatPercent(
     consolidated.totalCommissionRate,
   )}`;
+  elements.consolidatedCurrentGmvValue.textContent = formatCurrency(consolidated.currentGmv);
 
   elements.consolidatedTotalCommission.textContent = formatCurrency(
     consolidated.specialistTotalCommissionWithBmf,
@@ -493,6 +548,9 @@ function renderConsolidatedView(resultsByCategory, consolidated) {
   elements.consolidatedNetRetention.textContent = `retenção líquida ${formatPercent(
     consolidated.specialistNetRetentionRate,
   )}`;
+  elements.consolidatedTotalGmvValue.textContent = formatCurrency(
+    consolidated.currentGmv + consolidated.incrementalGmv,
+  );
 
   elements.consolidatedGrowth.textContent = formatSignedCurrency(
     consolidated.specialistIncrementalNetCommission,
@@ -500,6 +558,9 @@ function renderConsolidatedView(resultsByCategory, consolidated) {
   elements.consolidatedGrowthText.textContent = `de receita líquida adicional com ${integerFormatter.format(
     consolidated.bmfSales,
   )} novas vendas em 3 categorias`;
+  elements.consolidatedGrowthGmvContext.textContent = formatCurrency(
+    consolidated.incrementalGmv,
+  );
 
   elements.consolidatedBmfPassThrough.textContent = formatCurrency(consolidated.bmfPassThrough);
   elements.consolidatedConsultantRevenue.textContent = formatSignedCurrency(
@@ -552,6 +613,14 @@ function renderResults(result, label) {
   elements.averageTicketResult.textContent = formatCurrency(result.averageTicket);
   elements.currentSalesResult.textContent = integerFormatter.format(result.currentSales);
   elements.bmfSalesResult.textContent = integerFormatter.format(result.bmfSales);
+  elements.premiseCurrentGmv.textContent = formatCurrency(result.currentGmv);
+  elements.premiseIncrementalGmv.textContent = formatCurrency(result.incrementalGmv);
+
+  // GMV highlight bar
+  elements.gmvHighlightCurrent.textContent = formatCurrency(result.currentGmv);
+  elements.gmvHighlightTotal.textContent = formatCurrency(
+    result.currentGmv + result.incrementalGmv,
+  );
 
   elements.comparisonCurrentCommission.textContent = formatCurrency(
     result.specialistCurrentCommission,
@@ -560,6 +629,7 @@ function renderResults(result, label) {
     result.currentSales,
   )} vendas`;
   elements.comparisonCurrentRate.textContent = `comissão ${formatPercent(result.totalCommissionRate)}`;
+  elements.comparisonCurrentGmvValue.textContent = formatCurrency(result.currentGmv);
 
   elements.comparisonTotalCommission.textContent = formatCurrency(
     result.specialistTotalCommissionWithBmf,
@@ -570,6 +640,9 @@ function renderResults(result, label) {
   elements.comparisonNetRetention.textContent = `retenção líquida ${formatPercent(
     result.specialistNetRetentionRate,
   )}`;
+  elements.comparisonTotalGmvValue.textContent = formatCurrency(
+    result.currentGmv + result.incrementalGmv,
+  );
 
   elements.growthAmount.textContent = formatSignedCurrency(
     result.specialistIncrementalNetCommission,
@@ -577,6 +650,7 @@ function renderResults(result, label) {
   elements.growthText.textContent = `de receita líquida adicional por mês (${formatPercent(
     Math.abs(result.growthPercent),
   )})`;
+  elements.growthGmvContext.textContent = formatCurrency(result.incrementalGmv);
 
   elements.specialistGrossCommission.textContent = formatCurrency(
     result.specialistIncrementalGrossCommission,
@@ -620,6 +694,15 @@ function renderResults(result, label) {
   elements.taxValue.textContent = formatCurrency(result.taxValue);
   elements.totalCosts.textContent = formatCurrency(result.totalCosts);
   elements.platformFinalResult.textContent = formatCurrency(result.platformFinalResult);
+
+  // Money flow
+  elements.flowIncrementalGmv.textContent = formatCurrency(result.incrementalGmv);
+  elements.flowGrossCommission.textContent = formatCurrency(
+    result.specialistIncrementalGrossCommission,
+  );
+  elements.flowBmfPassThrough.textContent = formatCurrency(result.bmfPassThrough);
+  elements.flowPlatform.textContent = formatCurrency(result.platformRevenue);
+  elements.flowConsultant.textContent = formatSignedCurrency(result.consultantRevenue);
 }
 
 function updateCalculator() {

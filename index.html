@@ -175,6 +175,28 @@
             <span>Novas vendas BMF</span>
             <strong id="bmfSalesResult">0</strong>
           </div>
+          <div>
+            <span>GMV atual</span>
+            <strong id="premiseCurrentGmv">R$ 0</strong>
+          </div>
+          <div>
+            <span>GMV incremental BMF</span>
+            <strong id="premiseIncrementalGmv">R$ 0</strong>
+          </div>
+        </div>
+
+        <div class="gmv-highlight" id="gmvHighlight">
+          <div class="gmv-highlight-item">
+            <span class="gmv-highlight-label">GMV atual do especialista</span>
+            <strong id="gmvHighlightCurrent">R$ 0</strong>
+          </div>
+          <div class="gmv-highlight-arrow" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+          </div>
+          <div class="gmv-highlight-item gmv-highlight-total">
+            <span class="gmv-highlight-label">GMV total com BMF</span>
+            <strong id="gmvHighlightTotal">R$ 0</strong>
+          </div>
         </div>
 
         <div class="specialist-view">
@@ -187,6 +209,9 @@
                 <span id="comparisonCurrentSales">0 vendas</span>
                 <span id="comparisonCurrentRate">comissão 0%</span>
               </div>
+              <div class="comparison-gmv-hint" id="comparisonCurrentGmvHint">
+                sobre GMV de <strong id="comparisonCurrentGmvValue">R$ 0</strong>
+              </div>
             </div>
 
             <div class="comparison-arrow" aria-hidden="true">
@@ -196,10 +221,13 @@
             <div class="comparison-card with-bmf">
               <p class="comparison-label">Com BMF</p>
               <strong id="comparisonTotalCommission">R$ 0</strong>
-              <span>Comissão líquida estimada</span>
+              <span>Comissão total com BMF</span>
               <div class="comparison-detail">
                 <span id="comparisonTotalSales">0 vendas</span>
                 <span id="comparisonNetRetention">retenção líquida 0%</span>
+              </div>
+              <div class="comparison-gmv-hint" id="comparisonTotalGmvHint">
+                sobre GMV de <strong id="comparisonTotalGmvValue">R$ 0</strong>
               </div>
             </div>
           </div>
@@ -207,6 +235,9 @@
           <div class="growth-banner">
             <strong id="growthAmount">+R$ 0</strong>
             <span id="growthText">de receita líquida adicional por mês</span>
+            <div class="growth-gmv-context">
+              <span>Gerado por <strong id="growthGmvContext">R$ 0</strong> em GMV incremental via BMF</span>
+            </div>
           </div>
 
           <div class="roi-grid">
@@ -233,6 +264,20 @@
           </div>
         </div>
 
+        <div class="gmv-highlight" id="gmvHighlightConsolidated">
+          <div class="gmv-highlight-item">
+            <span class="gmv-highlight-label">GMV atual total (3 categorias)</span>
+            <strong id="gmvHighlightConsolidatedCurrent">R$ 0</strong>
+          </div>
+          <div class="gmv-highlight-arrow" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+          </div>
+          <div class="gmv-highlight-item gmv-highlight-total">
+            <span class="gmv-highlight-label">GMV total com BMF (3 categorias)</span>
+            <strong id="gmvHighlightConsolidatedTotal">R$ 0</strong>
+          </div>
+        </div>
+
         <div class="consolidated-view" hidden>
           <div class="comparison-hero">
             <div class="comparison-card baseline">
@@ -243,6 +288,9 @@
                 <span id="consolidatedCurrentSales">0 vendas</span>
                 <span id="consolidatedCurrentRate">comissão média 0%</span>
               </div>
+              <div class="comparison-gmv-hint" id="consolidatedCurrentGmvHint">
+                sobre GMV de <strong id="consolidatedCurrentGmvValue">R$ 0</strong>
+              </div>
             </div>
 
             <div class="comparison-arrow" aria-hidden="true">
@@ -252,10 +300,13 @@
             <div class="comparison-card with-bmf">
               <p class="comparison-label">Com BMF</p>
               <strong id="consolidatedTotalCommission">R$ 0</strong>
-              <span>Comissão líquida total estimada</span>
+              <span>Comissão total com BMF</span>
               <div class="comparison-detail">
                 <span id="consolidatedTotalSales">0 vendas</span>
                 <span id="consolidatedNetRetention">retenção líquida 0%</span>
+              </div>
+              <div class="comparison-gmv-hint" id="consolidatedTotalGmvHint">
+                sobre GMV de <strong id="consolidatedTotalGmvValue">R$ 0</strong>
               </div>
             </div>
           </div>
@@ -263,6 +314,9 @@
           <div class="growth-banner">
             <strong id="consolidatedGrowth">+R$ 0</strong>
             <span id="consolidatedGrowthText">de receita líquida adicional com N novas vendas em 3 categorias</span>
+            <div class="growth-gmv-context">
+              <span>Gerado por <strong id="consolidatedGrowthGmvContext">R$ 0</strong> em GMV incremental via BMF</span>
+            </div>
           </div>
 
           <div class="overview-grid">
@@ -340,6 +394,41 @@
             <p class="section-kicker">Como o repasse BMF se distribui</p>
             <h3 id="distribution-title">A comissão do especialista financia a operação</h3>
           </div>
+
+          <div class="money-flow">
+            <div class="money-flow-step">
+              <span class="money-flow-label">GMV incremental</span>
+              <strong id="flowIncrementalGmv">R$ 0</strong>
+            </div>
+            <div class="money-flow-arrow" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </div>
+            <div class="money-flow-step">
+              <span class="money-flow-label">Comissão bruta</span>
+              <strong id="flowGrossCommission">R$ 0</strong>
+            </div>
+            <div class="money-flow-arrow" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </div>
+            <div class="money-flow-step">
+              <span class="money-flow-label">Repasse BMF</span>
+              <strong id="flowBmfPassThrough">R$ 0</strong>
+            </div>
+            <div class="money-flow-arrow" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </div>
+            <div class="money-flow-split">
+              <div class="money-flow-step money-flow-platform">
+                <span class="money-flow-label">Plataforma</span>
+                <strong id="flowPlatform">R$ 0</strong>
+              </div>
+              <div class="money-flow-step money-flow-consultant">
+                <span class="money-flow-label">Consultor</span>
+                <strong id="flowConsultant">R$ 0</strong>
+              </div>
+            </div>
+          </div>
+
           <div class="distribution-grid">
             <article>
               <span>Especialista repassa</span>

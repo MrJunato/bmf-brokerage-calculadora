@@ -453,7 +453,7 @@ h3 {
 
 .premise-card {
   display: grid;
-  grid-template-columns: 1.2fr repeat(3, 1fr);
+  grid-template-columns: 1.2fr repeat(5, 1fr);
   gap: 1px;
   overflow: hidden;
   margin-bottom: 20px;
@@ -575,6 +575,96 @@ h3 {
   justify-content: center;
   color: var(--platform);
   flex-shrink: 0;
+}
+
+/* ---- GMV highlight bar ---- */
+
+.gmv-highlight {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #f4f8fc 0%, #edf4fa 100%);
+  border: 1px solid rgba(25, 92, 170, 0.18);
+  border-radius: 10px;
+}
+
+.gmv-highlight-item {
+  text-align: center;
+}
+
+.gmv-highlight-label {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.gmv-highlight-item strong {
+  display: block;
+  color: var(--text);
+  font-size: var(--fs-number-xl);
+  font-weight: 800;
+  line-height: 1.08;
+  overflow-wrap: anywhere;
+}
+
+.gmv-highlight-total strong {
+  color: var(--platform);
+}
+
+.gmv-highlight-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--platform);
+  flex-shrink: 0;
+}
+
+/* ---- GMV hint nos cartões de comparação ---- */
+
+.comparison-gmv-hint {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+.comparison-gmv-hint strong {
+  display: inline;
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.comparison-card.with-bmf .comparison-gmv-hint {
+  border-top-color: rgba(14, 124, 102, 0.18);
+}
+
+/* ---- GMV context no banner de crescimento ---- */
+
+.growth-gmv-context {
+  margin-top: 6px;
+}
+
+.growth-gmv-context span {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.growth-gmv-context strong {
+  display: inline;
+  color: var(--text);
+  font-size: 0.88rem;
+  font-weight: 700;
 }
 
 /* ---- Banner de crescimento ---- */
@@ -779,6 +869,82 @@ h3 {
 
 .distribution-grid article:nth-child(3) {
   border-left: 3px solid var(--platform);
+}
+
+/* ---- Fluxo visual do dinheiro ---- */
+
+.money-flow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow-x: auto;
+}
+
+.money-flow-step {
+  flex-shrink: 0;
+  min-width: 80px;
+  padding: 10px 12px;
+  background: #f8faf9;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.money-flow-label {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--muted);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.money-flow-step strong {
+  display: block;
+  color: var(--text);
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+}
+
+.money-flow-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.money-flow-split {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.money-flow-split .money-flow-step {
+  min-width: 75px;
+  padding: 8px 10px;
+}
+
+.money-flow-split .money-flow-step strong {
+  font-size: 0.82rem;
+}
+
+.money-flow-platform {
+  border-left: 3px solid var(--platform);
+}
+
+.money-flow-consultant {
+  border-left: 3px solid var(--consultant);
 }
 
 /* ============================================================
@@ -1050,6 +1216,19 @@ h3 {
     position: static;
   }
 
+  .premise-card {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .gmv-highlight {
+    padding: 14px 16px;
+    gap: 8px;
+  }
+
+  .gmv-highlight-item strong {
+    font-size: var(--fs-number-lg);
+  }
+
   .overview-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1191,6 +1370,15 @@ h3 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .gmv-highlight {
+    padding: 14px 16px;
+    gap: 8px;
+  }
+
+  .gmv-highlight-item strong {
+    font-size: var(--fs-number-lg);
+  }
+
   .roi-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1211,8 +1399,22 @@ h3 {
   .comparison-hero,
   .consultant-panel,
   .distribution-grid,
-  .breakdown-grid {
+  .breakdown-grid,
+  .gmv-highlight {
     grid-template-columns: 1fr;
+  }
+
+  .gmv-highlight-arrow {
+    transform: rotate(90deg);
+  }
+
+  .gmv-highlight {
+    padding: 12px 14px;
+    gap: 6px;
+  }
+
+  .gmv-highlight-item strong {
+    font-size: var(--fs-number-lg);
   }
 
   .comparison-arrow {
