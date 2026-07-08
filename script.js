@@ -74,8 +74,6 @@ const elements = {
   averageTicketResult: document.querySelector("#averageTicketResult"),
   currentSalesResult: document.querySelector("#currentSalesResult"),
   bmfSalesResult: document.querySelector("#bmfSalesResult"),
-  premiseCurrentGmv: document.querySelector("#premiseCurrentGmv"),
-  premiseIncrementalGmv: document.querySelector("#premiseIncrementalGmv"),
   comparisonCurrentCommission: document.querySelector("#comparisonCurrentCommission"),
   comparisonCurrentSales: document.querySelector("#comparisonCurrentSales"),
   comparisonCurrentRate: document.querySelector("#comparisonCurrentRate"),
@@ -432,8 +430,6 @@ function renderEmptyState() {
     elements.averageTicketResult,
     elements.currentSalesResult,
     elements.bmfSalesResult,
-    elements.premiseCurrentGmv,
-    elements.premiseIncrementalGmv,
     elements.comparisonCurrentCommission,
     elements.comparisonTotalCommission,
     elements.comparisonCurrentGmvValue,
@@ -504,11 +500,6 @@ function toggleViewMode(isConsolidated) {
     el.hidden = !isConsolidated;
   });
 
-  // O gmvHighlight individual fica fora da specialist-view, precisa de toggle manual
-  const gmvHighlight = document.querySelector("#gmvHighlight");
-  if (gmvHighlight) {
-    gmvHighlight.hidden = isConsolidated;
-  }
 }
 
 function renderConsolidatedView(resultsByCategory, consolidated) {
@@ -601,9 +592,6 @@ function renderResults(result, label) {
   elements.averageTicketResult.textContent = formatCurrency(result.averageTicket);
   elements.currentSalesResult.textContent = integerFormatter.format(result.currentSales);
   elements.bmfSalesResult.textContent = integerFormatter.format(result.bmfSales);
-  elements.premiseCurrentGmv.textContent = formatCurrency(result.currentGmv);
-  elements.premiseIncrementalGmv.textContent = formatCurrency(result.incrementalGmv);
-
   // GMV highlight bar
   elements.gmvHighlightCurrent.textContent = formatCurrency(result.currentGmv);
   elements.gmvHighlightTotal.textContent = formatCurrency(
