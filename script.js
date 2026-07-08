@@ -126,11 +126,9 @@ const elements = {
   consolidatedCurrentCommission: document.querySelector("#consolidatedCurrentCommission"),
   consolidatedCurrentSales: document.querySelector("#consolidatedCurrentSales"),
   consolidatedCurrentRate: document.querySelector("#consolidatedCurrentRate"),
-  consolidatedCurrentGmvValue: document.querySelector("#consolidatedCurrentGmvValue"),
   consolidatedTotalCommission: document.querySelector("#consolidatedTotalCommission"),
   consolidatedTotalSales: document.querySelector("#consolidatedTotalSales"),
   consolidatedNetRetention: document.querySelector("#consolidatedNetRetention"),
-  consolidatedTotalGmvValue: document.querySelector("#consolidatedTotalGmvValue"),
   consolidatedGrowth: document.querySelector("#consolidatedGrowth"),
   consolidatedGrowthText: document.querySelector("#consolidatedGrowthText"),
   consolidatedGrowthGmvContext: document.querySelector("#consolidatedGrowthGmvContext"),
@@ -494,8 +492,6 @@ function renderEmptyState() {
     elements.consolidatedTotalSales.textContent = "0 vendas";
     elements.consolidatedNetRetention.textContent = "retenção líquida 0%";
     elements.consolidatedGrowthText.textContent = "de receita líquida adicional em 3 categorias";
-    elements.consolidatedCurrentGmvValue.textContent = "R$ 0";
-    elements.consolidatedTotalGmvValue.textContent = "R$ 0";
     elements.consolidatedGrowthGmvContext.textContent = "R$ 0";
   }
 }
@@ -508,14 +504,10 @@ function toggleViewMode(isConsolidated) {
     el.hidden = !isConsolidated;
   });
 
-  // Toggle GMV highlight bars
+  // O gmvHighlight individual fica fora da specialist-view, precisa de toggle manual
   const gmvHighlight = document.querySelector("#gmvHighlight");
-  const gmvHighlightConsolidated = document.querySelector("#gmvHighlightConsolidated");
   if (gmvHighlight) {
     gmvHighlight.hidden = isConsolidated;
-  }
-  if (gmvHighlightConsolidated) {
-    gmvHighlightConsolidated.hidden = !isConsolidated;
   }
 }
 
@@ -537,7 +529,6 @@ function renderConsolidatedView(resultsByCategory, consolidated) {
   elements.consolidatedCurrentRate.textContent = `comissão média ${formatPercent(
     consolidated.totalCommissionRate,
   )}`;
-  elements.consolidatedCurrentGmvValue.textContent = formatCurrency(consolidated.currentGmv);
 
   elements.consolidatedTotalCommission.textContent = formatCurrency(
     consolidated.specialistTotalCommissionWithBmf,
@@ -548,9 +539,6 @@ function renderConsolidatedView(resultsByCategory, consolidated) {
   elements.consolidatedNetRetention.textContent = `retenção líquida ${formatPercent(
     consolidated.specialistNetRetentionRate,
   )}`;
-  elements.consolidatedTotalGmvValue.textContent = formatCurrency(
-    consolidated.currentGmv + consolidated.incrementalGmv,
-  );
 
   elements.consolidatedGrowth.textContent = formatSignedCurrency(
     consolidated.specialistIncrementalNetCommission,
