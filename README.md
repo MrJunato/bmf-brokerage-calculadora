@@ -1,6 +1,6 @@
 # Calculadora BMF Brokerage
 
-Calculadora HTML pública para simular o lucro incremental líquido gerado pela BMF Brokerage para especialistas/vendedores e a receita de cross-sell para consultores/assessores.
+Calculadora HTML pública para simular a receita de comissão gerada em vendas originadas pela BMF Brokerage para especialistas/vendedores, consultores/assessores e plataforma.
 
 ## Como abrir localmente
 
@@ -8,13 +8,12 @@ Abra o arquivo `index.html` diretamente no navegador. O projeto usa apenas HTML,
 
 ## O que a calculadora simula
 
-- Receita atual do especialista.
-- Lucro atual do especialista com base na margem informada.
-- Vendas incrementais originadas pela BMF.
-- Lucro incremental bruto e líquido para o especialista após comissão.
-- Lucro total estimado do especialista com BMF.
-- Receita nova para o consultor como cross-sell.
-- Comissão como custo de aquisição da venda incremental.
+- GMV atual e GMV incremental originado pela BMF.
+- Comissão bruta do especialista sobre as vendas atuais e incrementais.
+- Repasse BMF calculado como take rate sobre a comissão do especialista.
+- Comissão líquida retida pelo especialista depois do repasse BMF.
+- Receita nova para o consultor como participação no repasse BMF.
+- Receita da plataforma como participação no repasse BMF.
 - Detalhes operacionais da plataforma, incluindo impostos, custos e resultado.
 - Resultados por categoria e consolidado total.
 
@@ -22,22 +21,34 @@ Abra o arquivo `index.html` diretamente no navegador. O projeto usa apenas HTML,
 
 As premissas vieram do plano de criação da calculadora BMF Brokerage:
 
-| Categoria | Comissão total padrão |
+| Categoria | Comissão do especialista sobre GMV |
 | --- | ---: |
 | Carro de luxo | 5% |
 | Barco | 3% |
 | Aeronave | 1% |
 
-| Categoria | Margem atual padrão do especialista |
-| --- | ---: |
-| Carro de luxo | 12% |
-| Barco | 15% |
-| Aeronave | 4% |
-
-O split inicial da comissão é 50% para a plataforma e 50% para o consultor.
+O take rate padrão da BMF é 15% sobre a comissão bruta do especialista.
+O split inicial do repasse BMF é 50% para a plataforma e 50% para o consultor.
 O imposto estimado padrão é 9,65% sobre a receita da plataforma e pode ser editado por categoria.
-A comissão incide apenas sobre vendas originadas pela BMF, não sobre as vendas atuais do especialista.
-A margem atual é uma premissa comercial editável e representa a margem bruta do especialista antes da BMF.
+A comissão do especialista incide apenas sobre vendas originadas pela BMF para o cálculo incremental.
+
+## Modelo de cálculo
+
+```text
+GMV atual = ticket médio * vendas atuais
+GMV incremental = ticket médio * novas vendas BMF
+
+Comissão atual do especialista = GMV atual * comissão do especialista
+Comissão bruta incremental = GMV incremental * comissão do especialista
+Repasse BMF = comissão bruta incremental * take rate sobre a comissão
+
+Receita da plataforma = repasse BMF * split da plataforma
+Receita do consultor = repasse BMF * split do consultor
+Comissão líquida retida pelo especialista = comissão bruta incremental - repasse BMF
+
+Resultado líquido da plataforma =
+  receita da plataforma - impostos - custos variáveis - custos fixos
+```
 
 ## Publicação no GitHub Pages
 

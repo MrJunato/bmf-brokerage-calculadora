@@ -68,23 +68,23 @@
           </div>
 
           <div class="field">
-            <label for="specialistMargin">Margem atual do especialista</label>
-            <div class="input-suffix">
-              <input id="specialistMargin" name="specialistMargin" type="text" inputmode="decimal" value="12">
-              <span>%</span>
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="totalCommission">Comissão total</label>
+            <label for="totalCommission">Comissão do especialista</label>
             <div class="input-suffix">
               <input id="totalCommission" name="totalCommission" type="text" inputmode="decimal" value="5">
               <span>%</span>
             </div>
           </div>
 
+          <div class="field">
+            <label for="commissionTakeRate">Take rate sobre a comissão</label>
+            <div class="input-suffix">
+              <input id="commissionTakeRate" name="commissionTakeRate" type="text" inputmode="decimal" value="15">
+              <span>%</span>
+            </div>
+          </div>
+
           <fieldset class="split-fieldset">
-            <legend>Split da comissão</legend>
+            <legend>Split do repasse BMF</legend>
             <div class="split-control">
               <label class="split-side" for="platformSplit">
                 <span>Plataforma</span>
@@ -158,9 +158,6 @@
           </button>
         </div>
 
-        <!-- ============================================================
-           Premissas (visível em todas as abas)
-           ============================================================ -->
         <div class="premise-card" aria-label="Premissas do resultado selecionado">
           <div>
             <span>Categoria</span>
@@ -180,18 +177,15 @@
           </div>
         </div>
 
-        <!-- ============================================================
-           Visão do especialista (oculta no Consolidado)
-           ============================================================ -->
         <div class="specialist-view">
           <div class="comparison-hero">
             <div class="comparison-card baseline">
               <p class="comparison-label">Sem BMF</p>
-              <strong id="comparisonCurrentProfit">R$ 0</strong>
-              <span>Lucro mensal atual</span>
+              <strong id="comparisonCurrentCommission">R$ 0</strong>
+              <span>Comissão atual do especialista</span>
               <div class="comparison-detail">
                 <span id="comparisonCurrentSales">0 vendas</span>
-                <span id="comparisonCurrentMargin">margem 0%</span>
+                <span id="comparisonCurrentRate">comissão 0%</span>
               </div>
             </div>
 
@@ -201,47 +195,53 @@
 
             <div class="comparison-card with-bmf">
               <p class="comparison-label">Com BMF</p>
-              <strong id="comparisonTotalProfit">R$ 0</strong>
-              <span>Lucro mensal estimado</span>
+              <strong id="comparisonTotalCommission">R$ 0</strong>
+              <span>Comissão líquida estimada</span>
               <div class="comparison-detail">
                 <span id="comparisonTotalSales">0 vendas</span>
-                <span id="comparisonNetMargin">margem líquida 0%</span>
+                <span id="comparisonNetRetention">retenção líquida 0%</span>
               </div>
             </div>
           </div>
 
           <div class="growth-banner">
             <strong id="growthAmount">+R$ 0</strong>
-            <span id="growthText">de lucro adicional por mês</span>
+            <span id="growthText">de receita líquida adicional por mês</span>
           </div>
 
           <div class="roi-grid">
             <article class="roi-card">
-              <span>Retorno sobre o investimento</span>
-              <strong id="specialistRoi">0x</strong>
-              <p id="specialistRoiText">A cada R$ 1 em comissão, R$ 0 em lucro novo.</p>
+              <span>Comissão bruta incremental</span>
+              <strong id="specialistGrossCommission">R$ 0</strong>
+              <p id="specialistGrossCommissionText">Sobre as vendas originadas pela BMF.</p>
             </article>
             <article class="roi-card">
-              <span>Investimento BMF (comissão)</span>
-              <strong id="specialistCommission">R$ 0</strong>
-              <p id="specialistCommissionText">Apenas sobre as vendas que a BMF trouxer.</p>
+              <span>Repasse BMF</span>
+              <strong id="bmfPassThroughCard">R$ 0</strong>
+              <p id="bmfPassThroughText">Percentual da comissão bruta repassado para a BMF.</p>
+            </article>
+            <article class="roi-card">
+              <span>Comissão líquida retida</span>
+              <strong id="specialistNetCommissionCard">R$ 0</strong>
+              <p id="specialistNetCommissionText">Comissão incremental depois do repasse BMF.</p>
+            </article>
+            <article class="roi-card">
+              <span>Take rate sobre a comissão</span>
+              <strong id="commissionTakeRateCard">0%</strong>
+              <p id="commissionTakeRateText">Percentual da comissão capturado pela BMF.</p>
             </article>
           </div>
         </div>
 
-        <!-- ============================================================
-           Visão consolidada (apenas na aba Consolidado)
-           ============================================================ -->
         <div class="consolidated-view" hidden>
-          <!-- Antes/Depois consolidado -->
           <div class="comparison-hero">
             <div class="comparison-card baseline">
               <p class="comparison-label">Sem BMF</p>
-              <strong id="consolidatedCurrentProfit">R$ 0</strong>
-              <span>Lucro total mensal (3 categorias)</span>
+              <strong id="consolidatedCurrentCommission">R$ 0</strong>
+              <span>Comissão atual total (3 categorias)</span>
               <div class="comparison-detail">
                 <span id="consolidatedCurrentSales">0 vendas</span>
-                <span id="consolidatedCurrentMargin">margem média 0%</span>
+                <span id="consolidatedCurrentRate">comissão média 0%</span>
               </div>
             </div>
 
@@ -251,27 +251,25 @@
 
             <div class="comparison-card with-bmf">
               <p class="comparison-label">Com BMF</p>
-              <strong id="consolidatedTotalProfit">R$ 0</strong>
-              <span>Lucro total estimado</span>
+              <strong id="consolidatedTotalCommission">R$ 0</strong>
+              <span>Comissão líquida total estimada</span>
               <div class="comparison-detail">
                 <span id="consolidatedTotalSales">0 vendas</span>
-                <span id="consolidatedNetMargin">margem líquida 0%</span>
+                <span id="consolidatedNetRetention">retenção líquida 0%</span>
               </div>
             </div>
           </div>
 
-          <!-- Banner de crescimento consolidado -->
           <div class="growth-banner">
             <strong id="consolidatedGrowth">+R$ 0</strong>
-            <span id="consolidatedGrowthText">de lucro adicional com N novas vendas em 3 categorias</span>
+            <span id="consolidatedGrowthText">de receita líquida adicional com N novas vendas em 3 categorias</span>
           </div>
 
-          <!-- Visão geral da operação -->
           <div class="overview-grid">
             <article class="overview-card">
-              <span>Comissão total</span>
-              <strong id="consolidatedCommission">R$ 0</strong>
-              <p>Investimento total dos especialistas para acessar as vendas BMF.</p>
+              <span>Repasse BMF total</span>
+              <strong id="consolidatedBmfPassThrough">R$ 0</strong>
+              <p>Parcela da comissão dos especialistas capturada pela BMF.</p>
             </article>
             <article class="overview-card">
               <span>Receita total do consultor</span>
@@ -285,7 +283,6 @@
             </article>
           </div>
 
-          <!-- Quebra por categoria -->
           <section class="breakdown-section" aria-labelledby="breakdown-title">
             <h3 id="breakdown-title">Detalhamento por categoria</h3>
             <div class="breakdown-grid">
@@ -293,8 +290,8 @@
                 <h4>Carro de luxo</h4>
                 <div class="breakdown-rows">
                   <div><span>GMV incremental</span><strong id="breakdownCarGmv">R$ 0</strong></div>
-                  <div><span>Lucro líquido do especialista</span><strong id="breakdownCarNetProfit">R$ 0</strong></div>
-                  <div><span>Comissão paga</span><strong id="breakdownCarCommission">R$ 0</strong></div>
+                  <div><span>Comissão líquida retida</span><strong id="breakdownCarNetCommission">R$ 0</strong></div>
+                  <div><span>Repasse BMF</span><strong id="breakdownCarPassThrough">R$ 0</strong></div>
                   <div><span>Receita da plataforma</span><strong id="breakdownCarPlatform">R$ 0</strong></div>
                 </div>
               </article>
@@ -302,8 +299,8 @@
                 <h4>Barco</h4>
                 <div class="breakdown-rows">
                   <div><span>GMV incremental</span><strong id="breakdownBoatGmv">R$ 0</strong></div>
-                  <div><span>Lucro líquido do especialista</span><strong id="breakdownBoatNetProfit">R$ 0</strong></div>
-                  <div><span>Comissão paga</span><strong id="breakdownBoatCommission">R$ 0</strong></div>
+                  <div><span>Comissão líquida retida</span><strong id="breakdownBoatNetCommission">R$ 0</strong></div>
+                  <div><span>Repasse BMF</span><strong id="breakdownBoatPassThrough">R$ 0</strong></div>
                   <div><span>Receita da plataforma</span><strong id="breakdownBoatPlatform">R$ 0</strong></div>
                 </div>
               </article>
@@ -311,8 +308,8 @@
                 <h4>Aeronave</h4>
                 <div class="breakdown-rows">
                   <div><span>GMV incremental</span><strong id="breakdownAircraftGmv">R$ 0</strong></div>
-                  <div><span>Lucro líquido do especialista</span><strong id="breakdownAircraftNetProfit">R$ 0</strong></div>
-                  <div><span>Comissão paga</span><strong id="breakdownAircraftCommission">R$ 0</strong></div>
+                  <div><span>Comissão líquida retida</span><strong id="breakdownAircraftNetCommission">R$ 0</strong></div>
+                  <div><span>Repasse BMF</span><strong id="breakdownAircraftPassThrough">R$ 0</strong></div>
                   <div><span>Receita da plataforma</span><strong id="breakdownAircraftPlatform">R$ 0</strong></div>
                 </div>
               </article>
@@ -320,9 +317,6 @@
           </section>
         </div>
 
-        <!-- ============================================================
-           Painel do consultor (visível em todas as abas)
-           ============================================================ -->
         <section class="consultant-panel" aria-labelledby="consultant-title">
           <div>
             <p class="section-kicker">Para o consultor assessor</p>
@@ -341,18 +335,15 @@
           </div>
         </section>
 
-        <!-- ============================================================
-           Distribuição (visível em todas as abas)
-           ============================================================ -->
         <section class="distribution-panel" aria-labelledby="distribution-title">
           <div class="section-heading">
-            <p class="section-kicker">Como a comissão se distribui</p>
-            <h3 id="distribution-title">A comissão viabiliza a venda incremental</h3>
+            <p class="section-kicker">Como o repasse BMF se distribui</p>
+            <h3 id="distribution-title">A comissão do especialista financia a operação</h3>
           </div>
           <div class="distribution-grid">
             <article>
-              <span>Especialista paga</span>
-              <strong id="commissionPaid">R$ 0</strong>
+              <span>Especialista repassa</span>
+              <strong id="bmfPassThrough">R$ 0</strong>
             </article>
             <article>
               <span>Consultor recebe</span>
@@ -365,9 +356,6 @@
           </div>
         </section>
 
-        <!-- ============================================================
-           Detalhes da operação (visível em todas as abas)
-           ============================================================ -->
         <details class="operation-details">
           <summary>Detalhes da operação</summary>
 
@@ -376,28 +364,28 @@
               <h4 class="operation-subtitle">Visão do especialista</h4>
               <div class="operation-grid">
                 <div>
-                  <span>Receita atual do especialista</span>
-                  <strong id="currentRevenue">R$ 0</strong>
+                  <span>GMV atual do especialista</span>
+                  <strong id="currentGmv">R$ 0</strong>
                 </div>
                 <div>
-                  <span>Lucro atual do especialista</span>
-                  <strong id="specialistCurrentProfit">R$ 0</strong>
+                  <span>Comissão atual do especialista</span>
+                  <strong id="specialistCurrentCommission">R$ 0</strong>
                 </div>
                 <div>
                   <span>GMV incremental via BMF</span>
                   <strong id="incrementalGmv">R$ 0</strong>
                 </div>
                 <div>
-                  <span>Lucro incremental bruto</span>
-                  <strong id="specialistIncrementalGrossProfit">R$ 0</strong>
+                  <span>Comissão bruta incremental</span>
+                  <strong id="specialistIncrementalGrossCommission">R$ 0</strong>
                 </div>
                 <div>
-                  <span>Comissão BMF</span>
-                  <strong id="commissionPaidDetail">R$ 0</strong>
+                  <span>Repasse BMF</span>
+                  <strong id="bmfPassThroughDetail">R$ 0</strong>
                 </div>
                 <div>
-                  <span>Lucro incremental líquido</span>
-                  <strong id="specialistIncrementalNetProfitDetail">R$ 0</strong>
+                  <span>Comissão líquida incremental</span>
+                  <strong id="specialistIncrementalNetCommissionDetail">R$ 0</strong>
                 </div>
               </div>
             </div>
@@ -407,7 +395,7 @@
             <h4 class="operation-subtitle">Estrutura de custos da plataforma</h4>
             <div class="operation-grid">
               <div>
-                <span>Comissão total sobre GMV</span>
+                <span>Comissão do especialista sobre GMV</span>
                 <strong id="totalCommissionRate">0%</strong>
               </div>
               <div>
